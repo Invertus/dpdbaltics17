@@ -35,3 +35,4 @@
 
 ### Changed
 - Validation added for back office product page on deleted carriers(do not show deleted carrier)
+- Name changed for back office terminal import string
