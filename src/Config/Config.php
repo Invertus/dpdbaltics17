@@ -259,7 +259,7 @@ class Config
     {
         $module = Module::getInstanceByName('dpdbaltics');
 
-        return 'PS_'._PS_VERSION_.';'. $module->version;
+        return 'PS'._PS_VERSION_.';'. $module->version;
     }
 
 
