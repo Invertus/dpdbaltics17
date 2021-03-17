@@ -1250,7 +1250,7 @@ class DPDBaltics extends CarrierModule
                     ])
             );
     }
-
+    //TODO set multiple shipments for one order
     private function getShipment($idOrder)
     {
         if (!$idOrder) {
