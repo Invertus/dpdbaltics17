@@ -99,31 +99,33 @@ class ProductService
 
     public function updateCarriersOnCountryChange($newCountryIsoCode)
     {
-        $productId = $this->productRepository->getProductIdByProductReference(
-            Config::PRODUCT_TYPE_PUDO_COD
-        );
+        $productId = $this->productRepository
+            ->getProductIdByProductReference(Config::PRODUCT_TYPE_PUDO_COD);
         if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_PUDO_COD);
         } elseif (!$productId) {
-            $this->addProduct(Config::PRODUCT_TYPE_PUDO_COD, $newCountryIsoCode);
+            $this->addProduct(Config::PRODUCT_TYPE_PUDO_COD);
         }
 
-        $productId = $this->productRepository->getProductIdByProductReference(
-            Config::PRODUCT_TYPE_SAME_DAY_DELIVERY
-        );
-        if ($newCountryIsoCode !== Config::LATVIA_ISO_CODE) {
+        $parcelType = Config::getSameDeliveryDayParcelTypeByCountryCode($newCountryIsoCode);
+        $productId = $this->productRepository->getProductIdByProductReference($parcelType);
+
+        if ($newCountryIsoCode === Config::LITHUANIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
-        } elseif (!$productId) {
-            $this->addProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY, $newCountryIsoCode);
+        } else {
+            $this->deleteProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA);
         }
 
-        $productId = $this->productRepository->getProductIdByProductReference(
-            Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD
-        );
+        if (!$productId) {
+            $this->addProduct($parcelType);
+        }
+
+        $productId = $this->productRepository
+            ->getProductIdByProductReference(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
         if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
         } elseif (!$productId) {
-            $this->addProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD, $newCountryIsoCode);
+            $this->addProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
         }
 
         return true;

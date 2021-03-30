@@ -9,7 +9,9 @@ class ProductUtility
     public static function hasAvailability($productReference) {
         if ($productReference === Config::PRODUCT_TYPE_SATURDAY_DELIVERY ||
             $productReference === Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD ||
-            $productReference === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY) {
+            $productReference === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY ||
+            $productReference === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA ||
+            $productReference === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA_COD) {
             return true;
         }
 
@@ -18,15 +20,15 @@ class ProductUtility
 
     public static function validateSameDayDelivery($countryIso, $city)
     {
-        if ($countryIso !== Config::LATVIA_ISO_CODE) {
+        $city = strtolower($city);
+        if (!in_array($countryIso, Config::getSameDeliveryDayCountries(), true)) {
             return false;
-        }
 
-        if (strtolower($city) === 'riga' || strtolower($city) === 'rīga') {
+        }
+        if (in_array($city, Config::getSameDeliveryDayCities($countryIso), true)) {
             return true;
         }
 
         return false;
     }
-
 }

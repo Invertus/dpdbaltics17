@@ -89,11 +89,17 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
      */
     public function getList($idLlang, $orderBy = null, $orderWay = null, $start = 0, $limit = null, $idLangShop = false)
     {
+        /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
+        $currentCountryProvider = $this->module->getModuleContainer(\Invertus\dpdBaltics\Provider\CurrentCountryProvider::class);
+        $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
+
+        $sameDayDeliveryType = Config::getSameDeliveryDayParcelTypeByCountryCode($countryCode);
+
         $this->_select = 'p.`day`, p.`interval_start`, p.`interval_end`';
 
         $this->_join = 'LEFT JOIN `'._DB_PREFIX_.'dpd_product_availability` p ON p.`product_reference`= a.`product_reference`';
 
-        $this->_where = ' AND (a.`product_reference` = "' . Config::PRODUCT_TYPE_SAME_DAY_DELIVERY .
+        $this->_where = ' AND (a.`product_reference` = "' . $sameDayDeliveryType .
             '" OR a.`product_reference` = "' . Config::PRODUCT_TYPE_SATURDAY_DELIVERY . '")';
 
         $this->_group = 'GROUP BY a.product_reference';
