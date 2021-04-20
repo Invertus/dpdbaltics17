@@ -225,7 +225,12 @@ class Config
     const PRODUCT_TYPE_SATURDAY_DELIVERY = 'D-B2C-SAT';
     const PRODUCT_TYPE_SATURDAY_DELIVERY_COD = 'D-B2C-COD-SAT';
     const PRODUCT_TYPE_SAME_DAY_DELIVERY = '274';
+    const PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA = 'SDB2C';
+    const PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA_COD = 'SDB2C-COD';
+
     const PS_VERSION_1_7_7 = '1.7.7.0';
+
+
 
     const PRODUCT_NAME_B2B = [
         'LT' => 'Pristatymas privatiems asmenims',
@@ -277,6 +282,25 @@ class Config
         'EN' => 'Same day Delivery',
     ];
 
+    const PRODUCT_NAME_SAME_DAY_DELIVERY_LITHUANIA = [
+        'LT' => 'Pristatymas tą pačią dieną',
+        'EE' => 'Same day Delivery',
+        'LV' => 'Same day Delivery',
+        'EN' => 'Same day Delivery',
+    ];
+
+    const PRODUCT_NAME_SAME_DAY_DELIVERY_LITHUANIA_COD = [
+        'LT' => 'Pristatymas tą pačią dieną, atsiskaitymas grynaisiais',
+        'EE' => 'Same day Delivery',
+        'LV' => 'Same day Delivery',
+        'EN' => 'Same day Delivery',
+    ];
+
+    /**
+     * @param string $webServiceCountry
+     *
+     * @return DPDProductInstallCollection
+     */
     public static function getProducts($webServiceCountry = 'EN')
     {
         $collection = new DPDProductInstallCollection();
@@ -432,6 +456,24 @@ class Config
                 $product->setIsCod(0);
                 return $product;
                 break;
+            case self::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA:
+                $product = new DPDProductInstall();
+                $product->setName(self::PRODUCT_NAME_SAME_DAY_DELIVERY_LITHUANIA[$countryCode]);
+                $product->setId(self::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA);
+                $product->setDelay('Your delivery experts');
+                $product->setIsPudo(1);
+                $product->setIsCod(0);
+                return $product;
+                break;
+            case self::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA_COD:
+                $product = new DPDProductInstall();
+                $product->setName(self::PRODUCT_NAME_SAME_DAY_DELIVERY_LITHUANIA_COD[$countryCode]);
+                $product->setId(self::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA_COD);
+                $product->setDelay('Your delivery experts');
+                $product->setIsPudo(1);
+                $product->setIsCod(1);
+                return $product;
+                break;
             default:
                 return false;
                 break;
@@ -459,6 +501,8 @@ class Config
                     case self::PRODUCT_TYPE_PUDO:
                     case self::PRODUCT_TYPE_PUDO_COD:
                         return 20;
+                    case self::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA:
+                    case self::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA_COD:
                     case self::PRODUCT_TYPE_SAME_DAY_DELIVERY:
                         return 31.5;
                     case self::PRODUCT_TYPE_SATURDAY_DELIVERY_COD:
@@ -519,6 +563,73 @@ class Config
                 ];
             default:
                 return [];
+        }
+    }
+
+    /**
+     * @param $countryIso
+     * @param bool $toLowerCase
+     *
+     * @return array|string[]
+     */
+    public static function getSameDeliveryDayCities($countryIso, $toLowerCase = true): array
+    {
+        $cities = [];
+        switch ($countryIso) {
+            case self::LITHUANIA_ISO_CODE:
+                $cities = [
+                    'Vilnius',
+                    'Kaunas',
+                ];
+                break;
+            case self::ESTONIA_ISO_CODE:
+                $cities = [
+                    'Tallinn',
+                    'Tartu',
+                    'Pärnu',
+                    'Jõhvi',
+                    'Rakvere',
+                    'Haapsalu',
+                ];
+                break;
+            case self::LATVIA_ISO_CODE:
+                $cities = [
+                    'Rīga',
+                ];
+                break;
+            default:
+                $cities = [];
+        }
+
+        if (!empty($cities) && $toLowerCase) {
+            $cities = array_map('strtolower', $cities);
+        }
+
+        return $cities;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getSameDeliveryDayCountries()
+    {
+        return [self::ESTONIA_ISO_CODE, self::LITHUANIA_ISO_CODE, self::LATVIA_ISO_CODE];
+    }
+
+    /**
+     * @param $countryCode
+     * @return string
+     */
+    public static function getSameDeliveryDayParcelTypeByCountryCode($countryCode)
+    {
+        switch ($countryCode) {
+            case self::LATVIA_ISO_CODE:
+            case self::ESTONIA_ISO_CODE:
+                return self::PRODUCT_TYPE_SAME_DAY_DELIVERY;
+                break;
+            case self::LITHUANIA_ISO_CODE:
+                return self::PRODUCT_TYPE_SAME_DAY_DELIVERY_LITHUANIA;
+
         }
     }
 

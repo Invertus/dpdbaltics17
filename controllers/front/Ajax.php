@@ -137,17 +137,11 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
 
     private function searchPudoServices($countryCode, $city, $carrierId, $cartId, $street = '')
     {
-        $carrier = new Carrier($carrierId);
-        /** @var ParcelShopService $parcelShopService */
+
+        //TODO check if this function work correctly as some code is removed
         /** @var ProductRepository $productRepo */
         $parcelShopService = $this->module->getModuleContainer(ParcelShopService::class);
-        $productRepo = $this->module->getModuleContainer(ProductRepository::class);
 
-        $product = $productRepo->findProductByCarrierReference($carrier->id_reference);
-        $isSameDayDelivery = ($product['product_reference'] === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
-        if ($isSameDayDelivery) {
-            $city = Config::SAME_DAY_DELIVERY_CITY;
-        }
         if ($street) {
             $parcelShops = $parcelShopService->getFilteredParcels($countryCode, $city, $street);
         } else {

@@ -260,6 +260,12 @@ class DPDBaltics extends CarrierModule
         $cart = $params['cart'];
         $carrier = new Carrier($cart->id_carrier);
         $idShop = $this->context->shop->id;
+        /** @var  Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
+        $currentCountryProvider = $this->getModuleContainer(
+            \Invertus\dpdBaltics\Provider\CurrentCountryProvider::class
+        );
+
+        $currentCountry = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         /** @var Invertus\dpdBaltics\Repository\CarrierRepository $carrierRepo */
         /** @var Invertus\dpdBaltics\Repository\ProductRepository $productRepo */
@@ -274,7 +280,8 @@ class DPDBaltics extends CarrierModule
                 $isDpdCarrier = true;
                 $productId = $productRepo->getProductIdByCarrierReference($carrier->id_reference);
                 $product = new DPDProduct($productId);
-                $isSameDayDelivery = $product->product_reference === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY;
+                $isSameDayDelivery =
+                    $product->product_reference === Config::getSameDeliveryDayParcelTypeByCountryCode($currentCountry);
                 break;
             }
         }
@@ -287,7 +294,9 @@ class DPDBaltics extends CarrierModule
             $pudoRepo = $this->getModuleContainer(PudoRepository::class);
             $pudoId = $pudoRepo->getIdByCart($cart->id);
             $selectedPudo = new DPDPudo($pudoId);
-            if ($selectedPudo->city !== Config::SAME_DAY_DELIVERY_CITY) {
+            $pudoCity = strtolower($selectedPudo->city);
+
+            if (!in_array($pudoCity, Config::getSameDeliveryDayCities($currentCountry), true)) {
                 $this->context->controller->errors[] =
                     $this->l('This carrier can\'t deliver to your selected city');
                 $params['completed'] = false;
@@ -448,7 +457,7 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        if ($serviceCarrier['product_reference'] === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY) {
+        if ($serviceCarrier['product_reference'] === Config::getSameDeliveryDayParcelTypeByCountryCode($countryCode)) {
             $isSameDayAvailable = \Invertus\dpdBaltics\Util\ProductUtility::validateSameDayDelivery(
                 $countryCode,
                 $deliveryAddress->city
@@ -505,7 +514,7 @@ class DPDBaltics extends CarrierModule
         $productId = $productRepo->getProductIdByCarrierReference($carrier->id_reference);
         $dpdProduct = new DPDProduct($productId);
         $return = '';
-        if ($dpdProduct->getProductReference() === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY) {
+        if ($dpdProduct->getProductReference() === Config::getSameDeliveryDayParcelTypeByCountryCode($countryCode)) {
             /** @var \Invertus\dpdBaltics\Presenter\SameDayDeliveryMessagePresenter $sameDayDeliveryPresenter */
             $sameDayDeliveryPresenter = $this->getModuleContainer()->get(\Invertus\dpdBaltics\Presenter\SameDayDeliveryMessagePresenter::class);
             $return .= $sameDayDeliveryPresenter->getSameDayDeliveryMessageTemplate();
@@ -528,7 +537,8 @@ class DPDBaltics extends CarrierModule
             $parcelShopRepo = $this->getModuleContainer(ParcelShopRepository::class);
             $productRepo = $this->getModuleContainer(ProductRepository::class);
             $product = $productRepo->findProductByCarrierReference($carrier->id_reference);
-            $isSameDayDelivery = ($product['product_reference'] === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
+            $isSameDayDelivery =
+                ($product['product_reference'] === Config::getSameDeliveryDayParcelTypeByCountryCode($countryCode));
 
             $pudoId = $pudoRepo->getIdByCart($cart->id);
             $selectedPudo = new DPDPudo($pudoId);
@@ -594,7 +604,7 @@ class DPDBaltics extends CarrierModule
             }
 
             if ($isSameDayDelivery) {
-                $cityList['Rīga'] = 'Rīga';
+                $cityList = Config::getSameDeliveryDayCities($countryCode, false);
             } else {
                 $cityList = $parcelShopRepo->getAllCitiesByCountryCode($countryCode);
             }
