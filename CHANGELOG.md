@@ -93,9 +93,9 @@
 - Bugfix when prestashop versions below 1704 loses object instance and causes an error while importing parcels.
 - Bugfix when prestashop versions below 1704 smarty variable is not read correctly.
 - Bugfix when prestashop versions below 1704 tries to load undefined method.
-
 - More precision calculation library added, vendor regenerated, zip for vendor updated
 - Compatability fix for old php versions, do not use pipes in try catch statements
 - Bugfix when parcel terminal form is always visible in order"
+- Translatable string added when no option available, translations updated for all baltic languages for pickup select.
 
 
