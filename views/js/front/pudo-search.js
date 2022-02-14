@@ -217,9 +217,11 @@ function togglePhoneRequiredField(defaultCarrier) {
 
 function phoneInputValidation() {
     let phoneInput = $('input[name="dpd-phone"]');
-    const phoneNumberLimit = 8;
+    const minPhoneNumbersLimit = 3;
+    const maxPhoneNumberLimit = 13;
     phoneInput.on('keypress', function (event) {
-        if (event.currentTarget.value.length >= phoneNumberLimit) {
+        if (event.currentTarget.value.length <= minPhoneNumbersLimit ||
+            event.currentTarget.value.length >= maxPhoneNumberLimit) {
             return false;
         }
         var regex = new RegExp("^[a-zA-Z0-9]+$");
@@ -228,5 +230,4 @@ function phoneInputValidation() {
             event.preventDefault();
             return false;
         }
-    });
-}
+    });}

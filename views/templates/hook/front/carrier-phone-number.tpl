@@ -15,7 +15,7 @@
         </div>
 
         <div class="col-lg-4 col-8 col-sm-12 dpd-input-wrapper{if isset($dpdPhone) && $dpdPhone} hasValue{/if} small-padding-sm-left">
-            <input type="number" name="dpd-phone" id="dpd-carrier-{$carrierReference}" type="text" class="form-control" {if isset($dpdPhone) && $dpdPhone}value="{$dpdPhone}"{/if}>
+            <input type="number" name="dpd-phone" id="dpd-carrier-{$carrierReference}" class="form-control" {if isset($dpdPhone) && $dpdPhone}value="{$dpdPhone}"{/if}>
             <div id="phone-input-placeholder" class="dpd-input-placeholder" for="dpd-phone">{l s='Phone' mod='dpdbaltics'}</div>
         </div>
     </div>
