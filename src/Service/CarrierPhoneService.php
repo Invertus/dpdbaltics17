@@ -104,6 +104,13 @@ class CarrierPhoneService
 
     public function saveCarrierPhone($idCart, $dpdPhone, $dpdPhoneCode)
     {
+        if (!$this->validatePhoneNumber($dpdPhone)){
+            throw new DpdCarrierException(
+                'Phone number is not numeric',
+                Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER
+            );
+        }
+
         $idDpdOrderPhone = $this->orderRepository->getOrderPhoneIdByCartId($idCart);
 
         if (!$idDpdOrderPhone) {
@@ -142,4 +149,7 @@ class CarrierPhoneService
         return $phone;
     }
 
+    private function validatePhoneNumber($phone) {
+        return is_numeric($phone);
+    }
 }

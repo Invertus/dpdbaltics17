@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    phoneInputValidation();
     if ($('input[name="saved_pudo_id"]').val() === undefined) {
         updateStreet();
     } else {
@@ -36,6 +37,7 @@ function updateStreet() {
 $( document ).ajaxComplete(function( event, request, settings ) {
     let defaultCarrier =  $('.custom-radio > input:checked');
     togglePhoneRequiredField(defaultCarrier)
+
     var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
     if (!inArray(currentController, applicableControllers)) {
         return;
@@ -198,7 +200,7 @@ function inArray(needle, haystack) {
 
 function togglePhoneRequiredField(defaultCarrier) {
     let deliveryMethod = $('.custom-radio > input');
-    let currentCarrier = defaultCarrier.props('defaultValue');
+    let currentCarrier = defaultCarrier.prop('defaultValue');
     let dpdPhoneInputs = $('input[name="dpd-phone"]');
 
     deliveryMethod.on('change', function(event) {
@@ -210,5 +212,21 @@ function togglePhoneRequiredField(defaultCarrier) {
                 $(input).prop("required", false);
             }
         })
+    });
+}
+
+function phoneInputValidation() {
+    let phoneInput = $('input[name="dpd-phone"]');
+    const phoneNumberLimit = 8;
+    phoneInput.on('keypress', function (event) {
+        if (event.currentTarget.value.length >= phoneNumberLimit) {
+            return false;
+        }
+        var regex = new RegExp("^[a-zA-Z0-9]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
     });
 }
