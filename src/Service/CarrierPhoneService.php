@@ -29,6 +29,8 @@ class CarrierPhoneService
     const LITHUANIA_PHONE_PREFIX = '86';
     const LITHUANIA_NEW_PHONE_PREFIX = '6';
     const LITHUANIA_PHONE_LENGTH = 9;
+    const MIN_NUMBER_LENGTH_EUROPE = 3;
+    const MAX_NUMBER_LENGTH_EUROPE = 13;
 
     /** @var dpdbaltics */
     private $module;
@@ -104,6 +106,13 @@ class CarrierPhoneService
 
     public function saveCarrierPhone($idCart, $dpdPhone, $dpdPhoneCode)
     {
+        if(!$this->validatePhoneLength($dpdPhone)) {
+            throw new DpdCarrierException(
+                'Phone number too short or too long',
+                Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER
+            );
+        }
+
         if (!$this->validatePhoneNumber($dpdPhone)){
             throw new DpdCarrierException(
                 'Phone number is not numeric',
@@ -151,5 +160,11 @@ class CarrierPhoneService
 
     private function validatePhoneNumber($phone) {
         return is_numeric($phone);
+    }
+    private function validatePhoneLength($phone) {
+        if ( strlen($phone) < $this::MIN_NUMBER_LENGTH_EUROPE || strlen($phone) > $this::MAX_NUMBER_LENGTH_EUROPE) {
+            return false ;
+        }
+        return true;
     }
 }
