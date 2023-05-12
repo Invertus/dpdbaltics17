@@ -12,8 +12,6 @@ services:
     class: 'Invertus\dpdBaltics\Validate\Zone\ZoneDeleteValidate'
     arguments:
       - '@dpdbaltics'
-      - '@invertus.dpdbaltics.orm.entity_manager'
-
 
   invertus.dpdbaltics.validate.carrier.carrier_update_validate:
     class: 'Invertus\dpdBaltics\Validate\Carrier\CarrierUpdateValidate'

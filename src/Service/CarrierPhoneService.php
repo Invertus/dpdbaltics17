@@ -17,7 +17,6 @@ use Cart;
 use Context;
 use DPDBaltics;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
-use Invertus\dpdBaltics\ORM\EntityManager;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
 use Invertus\dpdBaltics\Config\Config;
@@ -36,7 +35,6 @@ class CarrierPhoneService
     /** @var Context */
     private $context;
 
-    private $entityManager;
     /**
      * @var PhonePrefixRepository
      */
@@ -49,13 +47,11 @@ class CarrierPhoneService
     public function __construct(
         DPDBaltics $module,
         Context $context,
-        EntityManager $entityManager,
         PhonePrefixRepository $phonePrefixRepository,
         OrderRepository $orderRepository
     ) {
         $this->module = $module;
         $this->context = $context;
-        $this->entityManager = $entityManager;
         $this->phonePrefixRepository = $phonePrefixRepository;
         $this->orderRepository = $orderRepository;
     }
@@ -81,7 +77,7 @@ class CarrierPhoneService
             $phone = $address->phone ? $address->phone : $address->phone_mobile;
         }
 
-        $phoneData['mobile_phone_code_list'] = $this->phonePrefixRepository->getCallPrefixesFrontOffice();
+        $phoneData['mobile_phone_code_list'] = $this->phonePrefixRepository->getCallPrefixes(false);
 
         $phonePrefix = $this->context->country->call_prefix;
         $this->context->controller->addJqueryPlugin('chosen');

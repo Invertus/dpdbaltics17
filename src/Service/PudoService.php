@@ -175,11 +175,7 @@ class PudoService
         $pudo->street = $pudoShop->street;
         $pudo->post_code = $pudoShop->p_code;
 
-        if (!$pudo->save()) {
-            return false;
-        }
-
-        return true;
+        return $pudo->save();
     }
 
     public function searchPudoServices($city, $carrierId, $cartId)
@@ -281,31 +277,6 @@ class PudoService
         }
 
         return $shipmentData;
-    }
-
-    public function saveSelectedParcel($cartId, $city, $street, $countryCode, $idCarrier)
-    {
-        /** @var DPDShop $parcelShopId */
-        $parcelShopId = $this->parcelShopRepository->getIdByCityAndStreet($city, $street);
-        if (!$parcelShopId) {
-            return true;
-        }
-        $parcelShop = DPDShop::getShopByPudoId($parcelShopId);
-        $carrier = new Carrier($idCarrier);
-
-        $pudoId = $this->pudoRepository->getIdByCart($cartId);
-
-        $pudo = new DPDPudo($pudoId);
-
-        $pudo->id_cart = (int)$cartId;
-        $pudo->pudo_id = $parcelShop->parcel_shop_id;
-        $pudo->id_carrier = $carrier->id;
-        $pudo->country_code = $countryCode;
-        $pudo->city = $parcelShop->city;
-        $pudo->street = $parcelShop->street;
-        $pudo->post_code = $parcelShop->p_code;
-
-        return $pudo->save();
     }
 
     public function getClosestParcelShops($pudoId)

@@ -15,7 +15,6 @@ namespace Invertus\dpdBaltics\Validate\Zone;
 use DPDBaltics;
 use DPDZone;
 use Exception;
-use Invertus\dpdBaltics\ORM\EntityManager;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 
@@ -26,15 +25,10 @@ class ZoneDeleteValidate
     */
     private $module;
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
 
-    public function __construct(DPDBaltics $module, EntityManager $em)
+    public function __construct(DPDBaltics $module)
     {
         $this->module = $module;
-        $this->em = $em;
     }
 
     /**

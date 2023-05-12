@@ -237,6 +237,8 @@ class PaymentService
             }
         }
     }
+
+    //NOTE: hack to store an exception in cache from module to disable payment module. Module.php getExceptionsStatic method is called.
     private function disablePaymentModule($moduleId)
     {
         $module = Module::getInstanceById($moduleId);

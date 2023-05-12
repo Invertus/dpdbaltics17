@@ -32,7 +32,7 @@ class PhonePrefixRepository extends AbstractEntityRepository
      * @throws PrestaShopDatabaseException
      * return Call prefixes as array for chosen select
      */
-    public function getCallPrefixes()
+    public function getCallPrefixes($withPrefix = true)
     {
         $query = new DbQuery();
         $query->select('c.`call_prefix`');
@@ -40,40 +40,12 @@ class PhonePrefixRepository extends AbstractEntityRepository
         $resource = Db::getInstance()->query($query);
         $result = [];
         while ($row = Db::getInstance()->nextRow($resource)) {
-            $callPrefix = Config::PHONE_CODE_PREFIX . $row['call_prefix'];
-            $result[$callPrefix] = $callPrefix;
+            if ($withPrefix) {
+                $result[Config::PHONE_CODE_PREFIX . $row['call_prefix']] = Config::PHONE_CODE_PREFIX . $row['call_prefix'];
+            } else {
+                $result[Config::PHONE_CODE_PREFIX . $row['call_prefix']] = $row['call_prefix'];
+            }
         }
-
-        return $result;
-    }
-
-    /**
-     * @return array
-     * @throws PrestaShopDatabaseException
-     * return Call prefixes as array for chosen select
-     */
-    public function getCallPrefixesFrontOffice()
-    {
-        $query = new DbQuery();
-        $query->select('c.`call_prefix`');
-        $query->from('country', 'c');
-        $resource = Db::getInstance()->query($query);
-        $result = [];
-        while ($row = Db::getInstance()->nextRow($resource)) {
-            $callPrefix = Config::PHONE_CODE_PREFIX . $row['call_prefix'];
-            $result[$callPrefix] = $row['call_prefix'];
-        }
-
-        return $result;
-    }
-
-    public function getCountriesCallPrefix($isoCode)
-    {
-        $query = new DbQuery();
-        $query->select('c.`call_prefix`');
-        $query->from('country', 'c');
-        $query->where('c.iso_code = "' . pSQL($isoCode) . '"');
-        $result = Config::PHONE_CODE_PREFIX . $this->db->getValue($query);
 
         return $result;
     }

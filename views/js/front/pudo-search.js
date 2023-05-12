@@ -159,7 +159,7 @@ function updateParcelBlock(city, street) {
             'ajax': 1,
             'city': city,
             'street': street,
-            'action': 'updateParcelBlock',
+            'action': 'searchPudoServices',
             'token': typeof prestashop !== 'undefined' ? prestashop.static_token : ''
         },
         success: function (response) {

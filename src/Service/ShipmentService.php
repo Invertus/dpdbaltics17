@@ -229,7 +229,7 @@ class ShipmentService
             $parcelWeight += $product['weight'] * $product['product_quantity'];
         }
 
-        $parcelPrice = $this->calculateParcelPriceWithOrderDiscount($order, $parcelPrice);
+        $parcelPrice -= (float) $order->total_discounts;
         $parcelPrice += $orderShippingCost;
         $shipment = $this->createShipment($order, $idProduct, $isTestMode, 1, $parcelWeight, $parcelPrice);
 
@@ -249,8 +249,8 @@ class ShipmentService
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
 
         foreach ($products as $product) {
-            $parcelPrice += $this->calculateProductsPrice($product);
-            $parcelPrice = $this->calculateParcelPriceWithOrderDiscount($order, $parcelPrice);
+            $parcelPrice += (float) $this->calculateProductsPrice($product);
+            $parcelPrice -= (float) $order->total_discounts;
             $parcelPrice += $orderShippingCost;
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum++;
@@ -277,7 +277,7 @@ class ShipmentService
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum += $product['product_quantity'];
         }
-        $parcelPrice = $this->calculateParcelPriceWithOrderDiscount($order, $parcelPrice);
+        $parcelPrice -= (float) $order->total_discounts;
         $parcelPrice += $orderShippingCost;
 
         $shipment = $this->createShipment($order, $idProduct, $isTestMode, $parcelsNum, $parcelWeight, $parcelPrice);
@@ -310,15 +310,6 @@ class ShipmentService
         $dpdShipment->update();
 
         return $dpdShipment;
-    }
-
-    private function calculateParcelPriceWithOrderDiscount($order, $currentPrice)
-    {
-        if (empty($order->total_discounts)) {
-            return $currentPrice;
-        }
-
-        return $currentPrice - $order->total_discounts;
     }
 
     private function calculateProductsPrice($product)

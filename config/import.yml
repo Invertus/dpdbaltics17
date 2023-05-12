@@ -11,7 +11,6 @@ services:
     class: 'Invertus\dpdBaltics\Service\Import\ZoneImport'
     arguments:
       - '@dpdbaltics'
-      - '@invertus.dpdbaltics.orm.entity_manager'
       - '@invertus.dpdbaltics.adapter.zone_adapter'
       - '@invertus.dpdbaltics.validate.zone.zone_range_validate'
       - '@invertus.dpdbaltics.repository.dpdzone_repository'
