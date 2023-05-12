@@ -84,6 +84,21 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
         $city = Tools::getValue('city_name');
         $carrierId = (int)Tools::getValue('id_carrier');
         switch ($action) {
+            case 'searchPudoServices':
+                $cartId = Context::getContext()->cart->id;
+                try {
+                    $response = $this->searchPudoServices($countryCode, $city, $carrierId, $cartId);
+                } catch (Exception $e) {
+                    $this->messages[] = $this->module->l('Parcel shop search failed!');
+                    $this->ajaxDie(json_encode(
+                        [
+                            'status' => false,
+                            'template' => $this->getMessageTemplate('danger'),
+                        ]
+                    ));
+                }
+                $this->ajaxDie(json_encode($response));
+                break;
             case 'savePudoPickupPoint':
                 $pudoId = Tools::getValue('id_pudo');
                 $this->savePudoPickupPoint($pudoId, $countryCode);
