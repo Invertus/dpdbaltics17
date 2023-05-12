@@ -63,9 +63,6 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
         $this->loadObject(true);
         $dpdCountries = Country::getCountries($this->context->language->id, false);
 
-        $dpdPickupCountryId = null;
-        $dpdReceiverCountryId = null;
-
         $this->multiple_fieldsets = true;
 
         $date = new DateTime(isset($this->fields_value['shipment_date']) ? $this->fields_value['shipment_date'] : null);

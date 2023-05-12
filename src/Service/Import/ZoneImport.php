@@ -18,7 +18,6 @@ use DPDZone;
 use DPDZoneRange;
 use Invertus\dpdBaltics\Adapter\ZoneAdapter;
 use Invertus\dpdBaltics\DTO\ZoneRangeObject;
-use Invertus\dpdBaltics\ORM\EntityManager;
 use Invertus\dpdBaltics\Repository\DPDZoneRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
 use Invertus\dpdBaltics\Validate\Zone\ZoneDeleteValidate;
@@ -35,11 +34,6 @@ class ZoneImport implements ImportableInterface
      * @var DPDBaltics
      */
     private $module;
-
-    /**
-     * @var EntityManager
-     */
-    private $em;
 
     /**
      * @var bool
@@ -76,14 +70,12 @@ class ZoneImport implements ImportableInterface
 
     public function __construct(
         DPDBaltics $module,
-        EntityManager $em,
         ZoneAdapter $zoneAdapter,
         ZoneRangeValidate $zoneRangeValidate,
         DPDZoneRepository $zoneRepository,
         Smarty $smarty
     ) {
         $this->module = $module;
-        $this->em = $em;
         $this->zoneAdapter = $zoneAdapter;
         $this->zoneRangeValidate = $zoneRangeValidate;
         $this->zoneRepository = $zoneRepository;

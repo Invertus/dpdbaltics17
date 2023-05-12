@@ -157,7 +157,7 @@ class PriceRuleService
             $this->language->id
         );
 
-        foreach ($result as $key => &$carrier) {
+        foreach ($result as &$carrier) {
             $carrier['tooltip'] = [
                 $this->module->l('Delay:', self::FILE_NAME) => $carrier['delay'],
             ];
@@ -170,7 +170,7 @@ class PriceRuleService
     {
         $result = (array) $this->paymentRepository->getAllPriceRulePaymentMethods(
             (int) $priceRule->id,
-            (Validate::isLoadedObject($priceRule))? false : true
+            !Validate::isLoadedObject($priceRule)
         );
 
         foreach ($result as $key => $item) {
@@ -197,7 +197,7 @@ class PriceRuleService
             if (empty($payments)) {
                 $this->getPaymentsFromRepository($priceRule);
             }
-            $availablePayments = (array) $this->getPaymentsFromRepository($priceRule);
+            $availablePayments = $this->getPaymentsFromRepository($priceRule);
             foreach ($availablePayments as $key => $availablePayment) {
                 if (!isset($payments[$availablePayment['id_module']])) {
                     $availablePayments[$key]['selected'] = false;

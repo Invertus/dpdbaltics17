@@ -19,7 +19,6 @@
  */
 
 
-use Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker;
 use Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand;
@@ -27,20 +26,16 @@ use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Grid\LinkRowActionCustom;
 use Invertus\dpdBaltics\Grid\SubmitBulkActionCustom;
 use invertus\dpdbaltics\install\installer;
-use Invertus\dpdBaltics\Logger\Logger;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
-use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Repository\ReceiverAddressRepository;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
-use Invertus\dpdBaltics\Service\API\LabelApiService;
-use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\CarrierPhoneService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\GoogleApiService;
@@ -48,7 +43,6 @@ use Invertus\dpdBaltics\Service\Label\LabelPositionService;
 use Invertus\dpdBaltics\Service\OrderService;
 use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBaltics\Service\Payment\PaymentService;
-use Invertus\dpdBaltics\Service\PriceRuleService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBaltics\Service\ShipmentService;
 use Invertus\dpdBaltics\Service\ShippingPriceCalculationService;
@@ -56,19 +50,11 @@ use Invertus\dpdBaltics\Service\TabService;
 use Invertus\dpdBaltics\Service\TrackingService;
 use Invertus\dpdBaltics\Util\CountryUtility;
 use Invertus\dpdBaltics\Validate\Carrier\PudoValidate;
-use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
-use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
-use Invertus\dpdBalticsApi\Factory\SerializerFactory;
-use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\Type\SubmitBulkAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\RowActionCollection;
-use PrestaShop\PrestaShop\Core\Grid\Action\Row\Type\LinkRowAction;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\ActionColumn;
-use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class DPDBaltics extends CarrierModule
@@ -192,8 +178,8 @@ class DPDBaltics extends CarrierModule
     {
         //TODO fillup this array when more modules are compatible with OPC
         $onePageCheckoutControllers = ['supercheckout'];
-        $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
-        $currentController = $this->context->controller->php_self ?? Tools::getValue('controller');
+        $applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
+        $currentController = isset($this->context->controller->php_self) ? $this->context->controller->php_self : Tools::getValue('controller');
 
         if ('product' === $currentController) {
             $this->context->controller->registerStylesheet(
@@ -229,8 +215,6 @@ class DPDBaltics extends CarrierModule
 
         }
 
-        /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
-        $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
         $webServiceCountryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
         $carrierIds = [];
         $baseUrl = $this->context->shop->getBaseURL(true, false);
@@ -254,7 +238,7 @@ class DPDBaltics extends CarrierModule
             'lapinas_text' => $this->l('Sustainable'),
             'dpd_carrier_ids' => $carrierIds
         ]);
-        if (in_array($currentController, $applicableControlelrs, true)) {
+        if (in_array($currentController, $applicableControllers, true)) {
             Media::addJsDef([
                 'select_an_option_translatable' => $this->l('Select an Option'),
                 'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
@@ -413,11 +397,9 @@ class DPDBaltics extends CarrierModule
             )) {
                 $this->context->controller->errors[] = $this->l('Delivery time data is not saved');
                 $params['completed'] = false;
-            };
+            }
         }
 
-        /** @var Cart $cart */
-        $cart = $params['cart'];
         $carrier = new Carrier($cart->id_carrier);
         /** @var PudoValidate $pudoValidator */
         $pudoValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.carrier.pudo_validate');
@@ -546,7 +528,7 @@ class DPDBaltics extends CarrierModule
         /** @var ShippingPriceCalculationService $shippingPriceCalculationService */
         $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.shipping_price_calculation_service');
 
-        return  $shippingPriceCalculationService->calculate($cart, $carrier, $deliveryAddress);
+        return $shippingPriceCalculationService->calculate($cart, $carrier, $deliveryAddress);
     }
 
     public function hookDisplayCarrierExtraContent($params)
@@ -601,9 +583,6 @@ class DPDBaltics extends CarrierModule
 
             /** @var ParcelShopService $parcelShopService */
             $parcelShopService= $this->getModuleContainer('invertus.dpdbaltics.service.parcel.parcel_shop_service');
-
-            $selectedCity = null;
-            $selectedStreet = null;
 
             try {
                 if (Validate::isLoadedObject($selectedPudo) && !$isSameDayDelivery) {
@@ -731,7 +710,7 @@ class DPDBaltics extends CarrierModule
         $this->moduleContainer = $containerBuilder;
     }
 
-    public function hookActionAdminControllerSetMedia($params)
+    public function hookActionAdminControllerSetMedia()
     {
         $currentController = Tools::getValue('controller');
 
@@ -741,7 +720,7 @@ class DPDBaltics extends CarrierModule
             $visibleClasses = $tabs->getTabsClassNames(false);
 
             if (in_array($currentController, $visibleClasses, true)) {
-                Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
+                Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames()]);
                 $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
             }
         }
@@ -840,8 +819,6 @@ class DPDBaltics extends CarrierModule
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/pudo.js');
 
             $this->context->controller->addCSS($this->getPathUri() . 'views/css/admin/order/admin-orders-controller.css');
-
-            return;
         }
     }
 
@@ -868,7 +845,6 @@ class DPDBaltics extends CarrierModule
         }
 
         $shipment = $this->getShipment($order->id);
-        $dpdCodWarning = false;
 
         /** @var OrderService $orderService */
         $orderService = $this->getModuleContainer('invertus.dpdbaltics.service.order_service');
@@ -1027,7 +1003,6 @@ class DPDBaltics extends CarrierModule
             'testOrder' => $shipment->is_test,
             'total_products' => 1,
             'contractPageLink' => $this->context->link->getAdminLink(self::ADMIN_PRODUCTS_CONTROLLER),
-            'dpdCodWarning' => $dpdCodWarning,
             'testMode' => Configuration::get(Config::SHIPMENT_TEST_MODE),
             'printLabelOption' => Configuration::get(Config::LABEL_PRINT_OPTION),
             'defaultLabelFormat' => Configuration::get(Config::DEFAULT_LABEL_FORMAT),
@@ -1103,7 +1078,7 @@ class DPDBaltics extends CarrierModule
                 )) {
                     $error = $this->l('Delivery time is not saved');
                     die($error);
-                };
+                }
             }
         }
 
@@ -1224,11 +1199,9 @@ class DPDBaltics extends CarrierModule
                 'show_template' => $showTemplates,
             ]
         );
-        $html = $this->context->smarty->fetch(
+        return $this->context->smarty->fetch(
             $this->getLocalPath() . 'views/templates/hook/front/order-detail.tpl'
         );
-
-        return $html;
     }
 
     public function hookActionAdminOrdersListingFieldsModifier($params)
@@ -1253,7 +1226,7 @@ class DPDBaltics extends CarrierModule
 
     /**
      * Callback function, it has to be static so can't call $this, so have to reload dpdBaltics module inside the function
-     * @param $idOrder
+     * @param int $orderId
      * @return string
      * @throws Exception
      */

@@ -138,12 +138,12 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                 $phoneService = $this->module->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
                 /** @var  \Invertus\dpdBaltics\Validate\Phone\PhoneNumberValidator $phoneNumberValidator */
                 $phoneNumberValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.phone.phone_number_validator');
-                $response = false;
+
                 try {
                     $prefix = Tools::getValue('phone_area');
                     $phone = Tools::getValue('phone_number');
                     $phoneNumberValidator->isPhoneValid($prefix, $phone);
-                    $response = $phoneService->saveCarrierPhone($cartId, $phone, $prefix);
+                    $phoneService->saveCarrierPhone($cartId, $phone, $prefix);
                 } catch (DpdCarrierException $exception) {
                     $this->setErrorMessage($exception);
                     $this->ajaxDie(json_encode(
@@ -175,7 +175,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             case 'saveSelectedStreet':
                 $city = Tools::getValue('city');
                 $street = Tools::getValue('street');
-                $this->saveParcelShop($countryCode, $city, $street);
+                $this->saveParcelShop($city, $street);
                 break;
             default:
                 break;
@@ -266,14 +266,8 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
         ]));
     }
 
-    public function getFileName()
+    protected function getMessageTemplate($type)
     {
-        return self::FILENAME;
-    }
-
-    protected function getMessageTemplate(
-        $type
-    ) {
         $flashMessageTypes = ['success', 'info', 'warning', 'danger'];
 
         if (!in_array($type, $flashMessageTypes)) {
@@ -320,22 +314,10 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
         ]));
     }
 
-    private function saveParcelShop($countryCode, $city, $street)
+    private function saveParcelShop($city, $street)
     {
         /** @var PudoService $pudoService */
         $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
-
-        $cartId = $this->context->cart->id;
-        $idCarrier = $this->context->cart->id_carrier;
-        $isSuccess = $pudoService->saveSelectedParcel($cartId, $city, $street, $countryCode, $idCarrier);
-
-        if (!$isSuccess) {
-            $this->messages[] = $this->l('Failed to save pickup point.');
-            $this->ajaxDie(json_encode([
-                'template' => $this->getMessageTemplate('danger'),
-                'status' => false
-            ]));
-        }
 
         $pudoId = $pudoService->getPudoIdByCityAndAddress($city, $street);
         $parcelShops = $pudoService->getClosestParcelShops($pudoId);

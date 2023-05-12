@@ -32,7 +32,6 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
     const DEFAULT_LABEL_TEMPLATE_ID = 1;
     public function postProcess()
     {
-//        return phpinfo();
         if (!Tools::isSubmit('dpd-return-submit')) {
             return;
         }
@@ -57,28 +56,30 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
         if ($dpdShipment->return_pl_number) {
             try {
                 $response = $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
-                $this->validateLabel($response->getStatus(), $response->getErrLog(), $orderId);
+
+                if ($response->getStatus() !== Config::API_SUCCESS_STATUS) {
+                    $this->context->cookie->dpd_error = json_encode($response->getErrLog());
+                    $this->redirectToOrder($orderId);
+                }
+
                 exit();
             } catch (Exception $e) {
                 $this->context->cookie->dpd_error = json_encode($e->getMessage());
-                Tools::redirect(
-                    $this->context->link->getPageLink(
-                        'order-detail',
-                        true,
-                        null,
-                        [
-                            'id_order' => $orderId,
-                        ]
-                    )
-                );
+                $this->redirectToOrder($orderId);
             }
         }
+
         try {
             /** @var ShipmentService $shipmentService */
             $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
             $dpdShipment = $shipmentService->createReturnServiceShipment($returnTemplateId, $orderId);
             $response = $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
-            $this->validateLabel($response->getStatus(), $response->getErrLog(), $orderId);
+
+            if ($response->getStatus() !== Config::API_SUCCESS_STATUS) {
+                $this->context->cookie->dpd_error = json_encode($response->getErrLog());
+                $this->redirectToOrder($orderId);
+            }
+
             exit();
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
@@ -88,45 +89,24 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
                 $exceptionService->getAPIErrorMessages()
             );
             $this->context->cookie->dpd_error = json_encode($errorMessage);
-            Tools::redirect(
-                $this->context->link->getPageLink(
-                    'order-detail',
-                    true,
-                    null,
-                    [
-                        'id_order' => $orderId,
-                    ]
-                )
-            );
+            $this->redirectToOrder($orderId);
         } catch (Exception $e) {
             $this->context->cookie->dpd_error = json_encode($e->getMessage());
-            Tools::redirect(
-                $this->context->link->getPageLink(
-                    'order-detail',
-                    true,
-                    null,
-                    [
-                        'id_order' => $orderId,
-                    ]
-                )
-            );
+            $this->redirectToOrder($orderId);
         }
     }
 
-    private function validateLabel($status, $errorLog, $orderId)
+    private function redirectToOrder($orderId)
     {
-        if ($status !== Config::API_SUCCESS_STATUS) {
-            $this->context->cookie->dpd_error = json_encode($errorLog);
-            Tools::redirect(
-                $this->context->link->getPageLink(
-                    'order-detail',
-                    true,
-                    null,
-                    [
-                        'id_order' => $orderId,
-                    ]
-                )
-            );
-        }
+        Tools::redirect(
+            $this->context->link->getPageLink(
+                'order-detail',
+                true,
+                null,
+                [
+                    'id_order' => $orderId
+                ]
+            )
+        );
     }
 }

@@ -50,7 +50,7 @@ $(document).ready(function () {
 
         var data = {
             'id_country': $idCountry,
-            'city_name': $cityName,
+            'city': $cityName,
             'zip_code': $zipCode,
             'street': $street,
             'id_cart': id_cart,

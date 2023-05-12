@@ -191,7 +191,7 @@ $(document).ready(function () {
 
         var data = {
             'id_country': $idCountry,
-            'city_name': $cityName,
+            'city': $cityName,
             'ajax': 1,
             'currentController': currentController,
             'id_service': $idService,
