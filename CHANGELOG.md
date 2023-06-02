@@ -140,3 +140,5 @@
 
 ## [3.2.14]
 - Fixed module price rule and address tabs not opening.
+
+## [3.2.15]
