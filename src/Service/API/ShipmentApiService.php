@@ -102,6 +102,13 @@ class ShipmentApiService
         $postCode = $address->postcode;
         $hasAddressFields = (bool) !$postCode || !$firstName || !$address->city || !$country;
 
+        // Post code might be wrong in order adress, so we set terminal post code instead
+        if ($shipmentData->isPudo()) {
+            $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
+            $selectedParcel = is_array($parcel) ? reset($parcel) : $parcel;
+            $postCode = $selectedParcel->getPCode();
+        }
+
         // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
         if (($hasAddressFields) && $shipmentData->isPudo()) {
             $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
