@@ -111,10 +111,7 @@ class ShipmentApiService
 
         // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
         if (($hasAddressFields) && $shipmentData->isPudo()) {
-            $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
-            $selectedParcel = is_array($parcel) ? reset($parcel) : $parcel;
             $firstName = $selectedParcel->getCompany();
-            $postCode = $selectedParcel->getPCode();
             $address->address1 = $selectedParcel->getStreet();
             $address->city = $selectedParcel->getCity();
             $country = $selectedParcel->getCountry();
