@@ -114,4 +114,32 @@ class ZoneRepository extends AbstractEntityRepository
 
         return $result ?: [];
     }
+
+    public function findProductsInZoneRange(Address $address, string $carrierReference)
+    {
+        $idCountry = $address->id_country ?: (int)\Configuration::get('PS_COUNTRY_DEFAULT');
+        $zipCode = $address->postcode;
+
+        $query = new DbQuery();
+        $query->select('dp.*');
+        $query->from('dpd_zone', 'dz');
+        $query->leftJoin('dpd_zone_range', 'dzr', 'dzr.id_dpd_zone = dz.id_dpd_zone');
+        $query->leftJoin('dpd_product_zone', 'dpz', 'dpz.id_dpd_zone = dz.id_dpd_zone');
+        $query->leftJoin('dpd_product', 'dp', 'dp.id_dpd_product = dpz.id_dpd_product');
+
+        $query->where('dp.active = ' . (int) 1);
+        $query->where('dzr.id_country = ' . (int)$idCountry);
+        $query->where('dzr.include_all_zip_codes = 1 OR (dzr.zip_code_from <= \'' . pSQL($zipCode) . '\' AND dzr.zip_code_to >= \'' . pSQL($zipCode) . '\')');
+
+        $productsIdReferences = $this->db->executeS($query);
+        $result = [];
+
+        foreach($productsIdReferences as $product) {
+            if ($product['id_reference'] === $carrierReference) {
+                $result[] = $product['id_reference'];
+            }
+        }
+
+        return $result ?: [];
+    }
 }

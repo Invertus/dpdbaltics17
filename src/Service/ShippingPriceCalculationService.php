@@ -53,7 +53,7 @@ class ShippingPriceCalculationService
     public function calculate(Cart $cart, \Carrier $carrier, Address $deliveryAddress)
     {
         $shippingCosts = 0.0;
-
+        //todo debug here why prices are not shown correctly
         $priceRulesIds = $this->priceRuleRepository->getByCarrierReference(
             $deliveryAddress,
             $carrier->id_reference,
