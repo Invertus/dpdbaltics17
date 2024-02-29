@@ -121,6 +121,20 @@ class ZoneRepository extends AbstractEntityRepository
         $zipCode = $address->postcode;
 
         $query = new DbQuery();
+
+        $query->select('dp.*');
+        $query->from('dpd_product', 'dp');
+        $query->where('dp.id_reference = ' . pSql($carrierReference));
+        $query->where('dp.active = ' . (int) 1);
+        $query->where('dp.all_zones = ' . (int) 1);
+
+        $result = $this->db->executeS($query);
+
+        if (!empty($result)) {
+            return $result;
+        }
+
+        $query = new DbQuery();
         $query->select('dp.*');
         $query->from('dpd_zone', 'dz');
         $query->leftJoin('dpd_zone_range', 'dzr', 'dzr.id_dpd_zone = dz.id_dpd_zone');
@@ -129,7 +143,7 @@ class ZoneRepository extends AbstractEntityRepository
 
         $query->where('dp.active = ' . (int) 1);
         $query->where('dzr.id_country = ' . (int)$idCountry);
-        $query->where('dzr.include_all_zip_codes = 1 OR (dzr.zip_code_from <= \'' . pSQL($zipCode) . '\' AND dzr.zip_code_to >= \'' . pSQL($zipCode) . '\')');
+        $query->where('dzr.include_all_zip_codes = 1 OR (dzr.zip_code_from_numeric <= \'' . pSQL($zipCode) . '\' AND dzr.zip_code_to_numeric >= \'' . pSQL($zipCode) . '\')');
 
         $productsIdReferences = $this->db->executeS($query);
         $result = [];
