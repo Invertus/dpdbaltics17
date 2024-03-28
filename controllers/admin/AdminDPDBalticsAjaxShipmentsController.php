@@ -198,7 +198,6 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);
-
     }
 
 
@@ -294,7 +293,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         return $labelPrintingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
     }
 
-    private function  printReturnLabel($shipmentId)
+    private function printReturnLabel($shipmentId)
     {
         /** @var LabelApiService $labelApiService */
         $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');

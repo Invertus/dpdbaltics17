@@ -39,7 +39,6 @@ class ModuleTabsUninstaller
 
     public function uninstallTabs()
     {
-
         foreach ($this->tabs as $tab) {
             $idTab = Tab::getIdFromClassName($tab->getClassName());
 

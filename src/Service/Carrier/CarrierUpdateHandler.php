@@ -21,7 +21,6 @@
 
 namespace Invertus\dpdBaltics\Service\Carrier;
 
-
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Service\Product\ProductService;
@@ -61,9 +60,9 @@ class CarrierUpdateHandler
         $products = Config::getProducts($webServiceCountry);
 
         foreach ($products as $product) {
-           $productId = $this->productRepository->getProductIdByProductReference($product->getId());
-           $this->updateCarrierService->updateCarrierName($productId, $product->getName());
-           $this->productService->updateProductName($productId, $product->getName());
+            $productId = $this->productRepository->getProductIdByProductReference($product->getId());
+            $this->updateCarrierService->updateCarrierName($productId, $product->getName());
+            $this->productService->updateProductName($productId, $product->getName());
         }
     }
 }

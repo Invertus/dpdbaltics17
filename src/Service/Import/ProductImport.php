@@ -35,7 +35,6 @@ use Language;
 
 class ProductImport implements ImportableInterface
 {
-
     const POSITION_NAME = 0;
     const POSITION_PRODUCT_REFERENCE = 1;
     const POSITION_IS_PUDO = 2;

@@ -64,4 +64,3 @@ class CarrierUpdateValidate
         return (int) $orderCarrierId === (int) $productCarrierId;
     }
 }
-

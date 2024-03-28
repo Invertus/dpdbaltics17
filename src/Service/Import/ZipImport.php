@@ -353,10 +353,10 @@ class ZipImport
 
 
         $this->confirmations[] = sprintf(
-                $this->module->l('Successfully imported %s with %d row(s)'),
-                $name,
-                $importable->getImportedRowsCount()
-            ) . $break;
+            $this->module->l('Successfully imported %s with %d row(s)'),
+            $name,
+            $importable->getImportedRowsCount()
+        ) . $break;
         $this->confirmations = array_merge($this->confirmations, $importable->getConfirmations());
         $this->importedTypes[] = $importOption;
     }

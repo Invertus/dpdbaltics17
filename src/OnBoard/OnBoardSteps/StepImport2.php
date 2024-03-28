@@ -25,7 +25,8 @@ class StepImport2 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepImport2';
 
-    public function checkIfRightStep($currentStep) {
+    public function checkIfRightStep($currentStep)
+    {
         if ($currentStep === (new \ReflectionClass($this))->getShortName()) {
             return true;
         }
@@ -37,7 +38,7 @@ class StepImport2 extends AbstractOnBoardStep
     {
         $templateDataObj = new OnBoardTemplateData();
 
-        $templateDataObj->setFastMoveButton(NEW OnBoardFastMoveButton(
+        $templateDataObj->setFastMoveButton(new OnBoardFastMoveButton(
             Config::STEP_MAIN_3,
             Config::STEP_FAST_MOVE_BACKWARD
         ));

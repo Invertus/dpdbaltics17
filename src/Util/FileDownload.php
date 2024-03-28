@@ -53,7 +53,7 @@ class FileDownload
         }
 
         if (file_exists($tmpFolder.$file)) {
-            if(ob_get_length() > 0) {
+            if (ob_get_length() > 0) {
                 ob_clean();
             }
 

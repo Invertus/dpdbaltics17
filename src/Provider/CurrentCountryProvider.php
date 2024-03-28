@@ -45,7 +45,6 @@ class CurrentCountryProvider
     public function getCurrentCountryIsoCode($cart = null)
     {
         if ($cartCountryIsoCode = $this->getCountryFromCart($cart)) {
-
             return $cartCountryIsoCode;
         }
 
@@ -96,6 +95,5 @@ class CurrentCountryProvider
         $address = new Address($idAddress);
 
         return Country::getIsoById($address->id_country) ?: null;
-
     }
 }

@@ -12,7 +12,6 @@
 
 class DPDCourierRequest extends ObjectModel
 {
-
     public $sender_name;
 
     public $sender_phone_code;

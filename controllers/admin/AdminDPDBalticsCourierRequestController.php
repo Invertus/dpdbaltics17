@@ -219,7 +219,6 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
         if (Tools::getIsset('submitAdddpd_courier_request')) {
             $phoneData['sender_phone_code'] = Tools::getValue('sender_phone_code');
             $phoneData['sender_phone'] = Tools::getValue('sender_phone');
-
         } elseif (Tools::getIsset('id_dpd_courier_request')) {
 
             /** @var CourierRequestRepository $courierRequestRepository */

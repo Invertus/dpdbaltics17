@@ -20,7 +20,6 @@
 
 namespace Invertus\dpdBaltics\Core\Shared\Repository;
 
-
 use Invertus\dpdBaltics\Infrastructure\Repository\CollectionRepository;
 
 class LanguageRepository extends CollectionRepository implements LanguageRepositoryInterface

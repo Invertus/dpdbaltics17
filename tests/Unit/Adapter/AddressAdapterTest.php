@@ -29,7 +29,6 @@ class AddressAdapterTest extends TestCase
      */
     public function testFormatPostCodeByCountry($postCode, $isoCode, $expectedResult)
     {
-
         $addressAdapter = new AddressAdapter();
         $result = $addressAdapter->formatPostCodeByCountry($postCode, $isoCode);
 

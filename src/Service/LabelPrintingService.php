@@ -61,7 +61,7 @@ class LabelPrintingService
             $shipment = new \DPDShipment($shipmentId);
             $plNumbers[] = $shipment->pl_number;
             if ($isAutomated) {
-                if(!$shipment->return_pl_number) {
+                if (!$shipment->return_pl_number) {
                     $shipment = $this->shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
                 }
                 $plNumbers[] = $shipment->return_pl_number;
