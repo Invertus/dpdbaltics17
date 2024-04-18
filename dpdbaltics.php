@@ -464,12 +464,17 @@ class DPDBaltics extends CarrierModule
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
 
         $deliveryAddress = new Address($cart->id_address_delivery);
+        $carrier = new Carrier($this->id_carrier);
 
-        if (empty($zoneRepository->findZoneInRangeByAddress($deliveryAddress))) {
+//        if (empty($zoneRepository->findZoneInRangeByAddress($deliveryAddress))) {
+//            return false;
+//        }
+
+        $availableDpdProductsByZone = $zoneRepository->findProductsInZoneRange($deliveryAddress, $carrier->id_reference);
+
+        if (empty($availableDpdProductsByZone)) {
             return false;
         }
-
-        $carrier = new Carrier($this->id_carrier);
 
         if (!$productAvailabilityService->checkIfCarrierIsAvailable($carrier->id_reference)) {
             return false;
