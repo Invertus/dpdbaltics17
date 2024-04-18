@@ -237,7 +237,6 @@ class PriceRulesImport implements ImportableInterface
                 );
             }
         }
-
     }
 
     /**

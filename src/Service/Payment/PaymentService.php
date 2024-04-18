@@ -45,7 +45,6 @@ use Validate;
 
 class PaymentService
 {
-
     const ID_BEGINNING_FOR_PICKUP_TYPE_IDENTIFICATION = 4;
     
     /**

@@ -26,7 +26,8 @@ class StepManualPriceRules1 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepManualPriceRules1';
 
-    public function checkIfRightStep($currentStep) {
+    public function checkIfRightStep($currentStep)
+    {
         if ($currentStep === (new \ReflectionClass($this))->getShortName()) {
             return true;
         }

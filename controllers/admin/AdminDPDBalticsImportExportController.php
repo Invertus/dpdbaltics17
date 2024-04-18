@@ -433,10 +433,10 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
         );
 
         $this->confirmations[] = sprintf(
-                $this->l('Successfully imported %s with %d row(s)'),
-                $name,
-                $importable->getImportedRowsCount()
-            ) . $break;
+            $this->l('Successfully imported %s with %d row(s)'),
+            $name,
+            $importable->getImportedRowsCount()
+        ) . $break;
 
         $this->confirmations = array_merge($this->confirmations, $importable->getConfirmations());
     }

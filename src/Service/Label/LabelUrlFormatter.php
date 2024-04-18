@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Invertus\dpdBaltics\Service\Label;
 
-
 use Invertus\dpdBaltics\Adapter\LinkAdapter;
 
 class LabelUrlFormatter

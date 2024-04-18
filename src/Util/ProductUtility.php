@@ -25,7 +25,8 @@ use Invertus\dpdBaltics\Config\Config;
 
 class ProductUtility
 {
-    public static function hasAvailability($productReference) {
+    public static function hasAvailability($productReference)
+    {
         if ($productReference === Config::PRODUCT_TYPE_SATURDAY_DELIVERY ||
             $productReference === Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD ||
             $productReference === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY) {
@@ -47,5 +48,4 @@ class ProductUtility
 
         return false;
     }
-
 }

@@ -45,7 +45,6 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
 
     private function printReturnLabel($orderId, $returnTemplateId)
     {
-
         $response['status'] = false;
 
         /** @var ShipmentRepository $shipmentRepo */

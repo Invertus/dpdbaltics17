@@ -29,7 +29,6 @@ class ParcelShopRepository extends AbstractEntityRepository
 {
     public function deleteShopsByCountryCode($countryCode)
     {
-
         $sql = 'DELETE w FROM `' . _DB_PREFIX_ . 'dpd_shop_work_hours` w 
         INNER JOIN `' . _DB_PREFIX_ . 'dpd_shop` s ON s.country = "' . pSQL($countryCode) . '" 
         WHERE s.parcel_shop_id = w.parcel_shop_id';

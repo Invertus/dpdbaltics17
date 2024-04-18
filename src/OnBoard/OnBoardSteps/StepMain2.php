@@ -20,7 +20,8 @@ class StepMain2 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepMain2';
 
-    public function checkIfRightStep($currentStep) {
+    public function checkIfRightStep($currentStep)
+    {
         if ($currentStep === (new \ReflectionClass($this))->getShortName()) {
             return true;
         }

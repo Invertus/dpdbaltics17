@@ -58,7 +58,6 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
         $this->initList();
         $this->initForm();
         $this->addressTemplateService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.address.address_template_service');
-
     }
 
     public function renderForm()

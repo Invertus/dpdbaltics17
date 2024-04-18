@@ -156,7 +156,7 @@ class OrderLabelController extends FrameworkBundleAdminController
                 $exceptionService->getAPIErrorMessages()
             ));
         } catch (\Exception $e) {
-            return $this->redirectWithError('admin_orders_index',$this->module->l('Failed to print label: ') . $e->getMessage());
+            return $this->redirectWithError('admin_orders_index', $this->module->l('Failed to print label: ') . $e->getMessage());
         }
 
         if (!empty($parcelPrintResponse->getErrLog())) {
@@ -179,11 +179,11 @@ class OrderLabelController extends FrameworkBundleAdminController
                 $exceptionService->getAPIErrorMessages()
             ));
         } catch (\Exception $e) {
-            return $this->redirectWithError('admin_orders_index',$this->module->l('Failed to print label: ') . $e->getMessage());
+            return $this->redirectWithError('admin_orders_index', $this->module->l('Failed to print label: ') . $e->getMessage());
         }
 
         if (!empty($parcelPrintResponse->getErrLog())) {
-            return $this->redirectWithError('admin_orders_index',$parcelPrintResponse->getErrLog());
+            return $this->redirectWithError('admin_orders_index', $parcelPrintResponse->getErrLog());
         }
 
         return null;

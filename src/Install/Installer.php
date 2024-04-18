@@ -303,7 +303,6 @@ class Installer
         $dpdCarriers = $this->carrierRepository->getDpdModuleCarrierReferences();
 
         foreach ($dpdCarriers as $reference) {
-
             $carrier = Carrier::getCarrierByReference($reference);
             if (Validate::isLoadedObject($carrier)) {
                 $carrier->deleted = 1;

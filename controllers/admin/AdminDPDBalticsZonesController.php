@@ -378,7 +378,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             $onBoardStepActionService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_step_action_service');
             $onBoardStepActionService->nextStep(Config::STEP_MANUAL_ZONES_6);
 
-            if(Tools::getValue('buttonName') === Config::ZONES_SAVE_AND_STAY_BUTTON) {
+            if (Tools::getValue('buttonName') === Config::ZONES_SAVE_AND_STAY_BUTTON) {
                 /** @var OnBoardService $onBoardService */
                 $onBoardService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_service');
                 $response['onBoardStepTemplate'] = $onBoardService->makeStepActionWithTemplateReturn(true);
@@ -387,5 +387,4 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
 
         return $response;
     }
-
 }

@@ -526,5 +526,4 @@ class PriceRuleRepository extends AbstractEntityRepository
 
         return $result;
     }
-
 }

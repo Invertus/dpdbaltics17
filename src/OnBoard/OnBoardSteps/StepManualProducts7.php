@@ -28,7 +28,8 @@ class StepManualProducts7 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepManualProducts7';
 
-    public function checkIfRightStep($currentStep) {
+    public function checkIfRightStep($currentStep)
+    {
         if ($currentStep === (new \ReflectionClass($this))->getShortName()) {
             return true;
         }
@@ -46,13 +47,13 @@ class StepManualProducts7 extends AbstractOnBoardStep
 
         $templateDataObj = new OnBoardTemplateData();
 
-        $templateDataObj->setFastMoveButton(NEW OnBoardFastMoveButton(
+        $templateDataObj->setFastMoveButton(new OnBoardFastMoveButton(
             Config::STEP_MANUAL_ZONES_0,
             Config::STEP_FAST_MOVE_BACKWARD
         ));
 
         if ($this->stepDataService->isAtLeastOneProductActive()) {
-            $templateDataObj->setFastMoveButton(NEW OnBoardFastMoveButton(
+            $templateDataObj->setFastMoveButton(new OnBoardFastMoveButton(
                 Config::STEP_MANUAL_PRICE_RULES_0,
                 Config::STEP_FAST_MOVE_FORWARD
             ));

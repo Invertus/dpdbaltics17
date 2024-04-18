@@ -34,7 +34,6 @@ use Language;
 
 class ProductExport implements ExportableInterface
 {
-
     const FILE_NAME = 'ProductExport';
 
     /**

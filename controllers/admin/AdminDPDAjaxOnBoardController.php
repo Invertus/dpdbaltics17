@@ -56,7 +56,7 @@ class AdminDPDAjaxOnBoardController extends AbstractAdminController
             return;
         }
 
-        if (!Configuration::updateValue(Config::ON_BOARD_STEP, $nextStep) ) {
+        if (!Configuration::updateValue(Config::ON_BOARD_STEP, $nextStep)) {
             $this->returnResponse(
                 array(
                     'status' => false,

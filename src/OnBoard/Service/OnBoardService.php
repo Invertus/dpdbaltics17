@@ -12,7 +12,6 @@
 
 namespace Invertus\dpdBaltics\OnBoard\Service;
 
-
 use Configuration;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\OnBoard\Builder\OnBoardBlockBuilder;

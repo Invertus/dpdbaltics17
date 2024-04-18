@@ -181,7 +181,8 @@ class OnBoardStepActionService
         Configuration::updateValue(Config::ON_BOARD_MANUAL_CONFIG_CURRENT_PART, $completedSteps);
     }
 
-    private function updateStep($newStep) {
+    private function updateStep($newStep)
+    {
         Configuration::updateValue(Config::ON_BOARD_STEP, $newStep);
     }
 }

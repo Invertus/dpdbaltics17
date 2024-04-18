@@ -21,7 +21,8 @@ class StepManualConfigFinish extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepManualConfigFinish';
 
-    public function checkIfRightStep($currentStep) {
+    public function checkIfRightStep($currentStep)
+    {
         if ($currentStep === (new \ReflectionClass($this))->getShortName()) {
             return true;
         }

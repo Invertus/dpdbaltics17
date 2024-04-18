@@ -77,12 +77,12 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
 
     public function postProcess()
     {
-
         $action = Tools::getValue('action');
         $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
         $city = Tools::getValue('city_name');
-        $carrierId = (int)Tools::getValue('id_carrier');
+        $carrierId = (int) Tools::getValue('id_carrier');
+
         switch ($action) {
             case 'searchPudoServices':
                 $cartId = Context::getContext()->cart->id;

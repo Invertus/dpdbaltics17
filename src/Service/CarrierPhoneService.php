@@ -117,10 +117,10 @@ class CarrierPhoneService
         $dpdOrderPhone->id_cart = $idCart;
 
         if (!$dpdOrderPhone->save()) {
-           throw new DpdCarrierException(
-               'Could not save phone number',
-               Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER
-           );
+            throw new DpdCarrierException(
+                'Could not save phone number',
+                Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER
+            );
         }
 
         return true;
@@ -141,5 +141,4 @@ class CarrierPhoneService
 
         return $phone;
     }
-
 }

@@ -144,7 +144,6 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         $this->module->display($this->module->getPathUri(), 'views/templates/admin/redirect/redirect-closing.tpl')
                     );
             }
-
         }
 
         /** @var LabelPositionService $labelPositionService */

@@ -24,7 +24,8 @@ class StepImportFinish extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepImportFinish';
 
-    public function checkIfRightStep($currentStep) {
+    public function checkIfRightStep($currentStep)
+    {
         if ($currentStep === (new \ReflectionClass($this))->getShortName()) {
             return true;
         }
