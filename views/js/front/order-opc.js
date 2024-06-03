@@ -17,11 +17,21 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 var isPudoPointSelected = false;
-
 $(document).ready(function (){
 
     $(document).on('change', '.dpd-phone-block', function() {
         handlePhoneNumber($(this));
+    });
+
+    $('body').on('click', '#confirm_order', function(e) {
+        e.preventDefault();
+
+        if ($('.dpd-phone-block') !== undefined) {
+            if(!handlePhoneNumber($('.dpd-phone-block'))) {
+                return;
+            }
+        }
+
     });
 
     $(document).on('click','.payment_module a', function (e){
@@ -82,3 +92,11 @@ function DPDdisplayMessageOpc(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
     $messageContainer.html(template);
 }
+
+// Module "onepagecheckoutps" compatibility
+$(document).on('opc-load-review:completed', function() {
+    $('.delivery-option.selected .carrier-extra-content').show();
+    handlePhoneNumber($('.dpd-phone-block'));
+});
+
+
