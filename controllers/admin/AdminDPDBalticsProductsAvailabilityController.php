@@ -116,7 +116,8 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
             $this->module->l('Friday'),
         ];
 
-        $this->context->smarty->assign([
+        $this->context->smarty->assign(
+            [
             'daysList' => $deliveryDays,
             'productId' => Tools::getValue('id_dpd_product')
             ]

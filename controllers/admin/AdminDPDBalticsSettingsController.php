@@ -238,7 +238,6 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
             try {
                 $regenerationHandler->handle();
                 $this->confirmations[] = $this->l('Prestashop carriers regenerated successfully');
-
             } catch (DpdCarrierException $e) {
                 $logger->error($e->getMessage());
                 $this->errors[] = $this->l('Could not regenerate carriers, please refer to module logs for more information');

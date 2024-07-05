@@ -75,7 +75,7 @@ class OrderService
     public function updateOrderCarrier(Order $order, $newCarrierId)
     {
         if (!Validate::isLoadedObject($order)) {
-          throw new DpdCarrierException('Could not load order');
+            throw new DpdCarrierException('Could not load order');
         }
 
         $order->id_carrier = $newCarrierId;

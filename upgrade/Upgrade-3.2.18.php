@@ -26,4 +26,3 @@ function upgrade_module_3_2_18(DPDBaltics $module)
 {
     return Configuration::updateValue(Config::HIDE_ORDERS_LABEL_PRINT_BUTTON, 0);
 }
-

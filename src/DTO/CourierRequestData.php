@@ -401,5 +401,4 @@ class CourierRequestData
     {
         $this->nonStandard = $nonStandard;
     }
-
 }

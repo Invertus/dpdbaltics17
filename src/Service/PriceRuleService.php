@@ -41,7 +41,6 @@ use Validate;
 
 class PriceRuleService
 {
-
     const FILE_NAME = 'PriceRuleService';
 
     /**

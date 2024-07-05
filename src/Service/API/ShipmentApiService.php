@@ -146,8 +146,7 @@ class ShipmentApiService
 
         $cartMessage = Message::getMessagesByOrderId($orderId);
 
-        if ($cartMessage)
-        {
+        if ($cartMessage) {
             $trimmedRemarkMessage = StringUtility::trimString($cartMessage[0]['message']);
             $shipmentCreationRequest->setRemark(StringUtility::removeSpecialCharacters($trimmedRemarkMessage));
         }
@@ -246,5 +245,4 @@ class ShipmentApiService
     {
         return (bool) \Configuration::get(Config::SEND_EMAIL_ON_PARCEL_CREATION);
     }
-
 }

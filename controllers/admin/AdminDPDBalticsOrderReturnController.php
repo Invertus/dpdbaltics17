@@ -140,7 +140,8 @@ class AdminDPDBalticsOrderReturnController extends AbstractAdminController
             [
                 'vieworder' => '1',
                 'id_order' => (int)$shipment->id_order
-            ]);
+            ]
+        );
 
         $params = [
             'href' => $orderUrl,

@@ -30,7 +30,6 @@ use Invertus\dpdBaltics\Util\StringUtility;
 
 class PhoneNumberValidator
 {
-
     private $module;
 
     private $phoneRepository;
@@ -49,7 +48,6 @@ class PhoneNumberValidator
                 Config::ERROR_EMPTY_PHONE_DETAILS
             );
         } else {
-
             if (empty($prefix)) {
                 throw new DpdCarrierException(
                     'Phone number prefix is empty',
@@ -88,4 +86,3 @@ class PhoneNumberValidator
         return $this->isPhoneValid($dpdPhone->phone_area, $dpdPhone->phone);
     }
 }
-

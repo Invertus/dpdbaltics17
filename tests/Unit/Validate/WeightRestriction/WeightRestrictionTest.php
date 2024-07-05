@@ -24,7 +24,6 @@ use Invertus\dpdBaltics\Validate\Weight\CartWeightValidator;
 
 class WeightRestrictionTest extends PHPUnit_Framework_TestCase
 {
-
     public function testParcelDistributionSameShipmentWeight()
     {
         //All products in same shipment
@@ -36,7 +35,6 @@ class WeightRestrictionTest extends PHPUnit_Framework_TestCase
         $validator = new CartWeightValidator();
 
         $this->assertTrue($validator->validate($cartMock, $distribution, $this->getMaxAllowedWeight()));
-
     }
 
     public function testParcelDistributionProductInSeparateParcel()
@@ -49,7 +47,6 @@ class WeightRestrictionTest extends PHPUnit_Framework_TestCase
         $cartMock->method('getProducts')->willReturn($this->getMockProducts());
 
         $this->assertFalse($validator->validate($cartMock, $distribution, $this->getMaxAllowedWeight()));
-
     }
 
     public function testParcelDistributionQuantityInSeparateParcel()
@@ -62,7 +59,6 @@ class WeightRestrictionTest extends PHPUnit_Framework_TestCase
         $cartMock->method('getProducts')->willReturn($this->getMockProducts());
 
         $this->assertTrue($validator->validate($cartMock, $distribution, $this->getMaxAllowedWeight()));
-
     }
 
     private function getMockTotalWeight()

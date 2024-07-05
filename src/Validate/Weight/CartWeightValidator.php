@@ -24,8 +24,6 @@ namespace Invertus\dpdBaltics\Validate\Weight;
 use Invertus\dpdBaltics\Config\Config;
 use Validate;
 
-
-
 class CartWeightValidator
 {
     const DISTRIBUTION_NONE = 'none';
@@ -65,7 +63,6 @@ class CartWeightValidator
         foreach ($cartProducts as $product) {
             if ((int) $product['weight'] > 0) {
                 $isValid = $maxAllowedWeight >= $product['weight'];
-
             }
 
             if (!$isValid) {

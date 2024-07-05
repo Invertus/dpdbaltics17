@@ -26,7 +26,8 @@ class StepManualZones1 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepManualZones1';
 
-    public function checkIfRightStep($currentStep) {
+    public function checkIfRightStep($currentStep)
+    {
         if ($currentStep === (new \ReflectionClass($this))->getShortName()) {
             return true;
         }
@@ -39,13 +40,13 @@ class StepManualZones1 extends AbstractOnBoardStep
         $templateDataObj = new OnBoardTemplateData();
         $templateDataObj->setContainerClass('center-top');
 
-        $templateDataObj->setFastMoveButton(NEW OnBoardFastMoveButton(
+        $templateDataObj->setFastMoveButton(new OnBoardFastMoveButton(
             Config::STEP_MAIN_3,
             Config::STEP_FAST_MOVE_BACKWARD
         ));
 
         if ($this->stepDataService->isAtLeastOneZoneCreated()) {
-            $templateDataObj->setFastMoveButton(NEW OnBoardFastMoveButton(
+            $templateDataObj->setFastMoveButton(new OnBoardFastMoveButton(
                 Config::STEP_MANUAL_PRODUCTS_0,
                 Config::STEP_FAST_MOVE_FORWARD
             ));

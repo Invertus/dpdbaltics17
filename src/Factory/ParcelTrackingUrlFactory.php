@@ -39,7 +39,6 @@ class ParcelTrackingUrlFactory
     }
     public function createTrackingUrl($cart, $parcelNumber)
     {
-
         $currentCountry = $this->countryProvider->getCurrentCountryIsoCode($cart);
 
         if (in_array($currentCountry, Config::VALID_TRACKING_URL_COUNTRIES, true)) {
