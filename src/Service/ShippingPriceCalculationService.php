@@ -53,6 +53,9 @@ class ShippingPriceCalculationService
     public function calculate(Cart $cart, \Carrier $carrier, Address $deliveryAddress)
     {
         $shippingCosts = 0.0;
+        //todo price rules do not exist if setting is all price rule exist
+        // if prz all zones = 1
+        // check if carrier set to all zones if yes we take price rule of the all_zones
 
         $priceRulesIds = $this->priceRuleRepository->getByCarrierReference(
             $deliveryAddress,
