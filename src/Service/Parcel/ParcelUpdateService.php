@@ -88,11 +88,11 @@ class ParcelUpdateService
         foreach ($parcel->getOpeningHours() as $openingHours) {
             $parcelShopWorkHours = new DPDShopWorkHours();
             $parcelShopWorkHours->parcel_shop_id = $parcel->getParcelShopId();
-            $parcelShopWorkHours->week_day = $openingHours->weekday;
-            $parcelShopWorkHours->open_morning = $openingHours->openMorning;
-            $parcelShopWorkHours->close_morning = $openingHours->closeMorning;
-            $parcelShopWorkHours->open_afternoon = $openingHours->openAfternoon;
-            $parcelShopWorkHours->close_afternoon = $openingHours->closeAfternoon;
+            $parcelShopWorkHours->week_day = $openingHours->getWeekDay();
+            $parcelShopWorkHours->open_morning = $openingHours->getOpenMorning();
+            $parcelShopWorkHours->close_morning = $openingHours->getOpenMorning();
+            $parcelShopWorkHours->open_afternoon = $openingHours->getOpenAfternoon();
+            $parcelShopWorkHours->close_afternoon = $openingHours->getCloseAfternoon();
 
             try {
                 $parcelShopWorkHours->add();

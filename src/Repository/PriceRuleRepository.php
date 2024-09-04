@@ -106,6 +106,7 @@ class PriceRuleRepository extends AbstractEntityRepository
             );
 
             $query->where('zr.`id_country`= ' . (int) $deliveryAddress->id_country);
+            $query->where('prz.all_zones = 1 OR (zr.zip_code_from_numeric <= \'' . pSQL($deliveryAddress->postcode) . '\' AND zr.zip_code_to_numeric >= \'' . pSQL($deliveryAddress->postcode) . '\')');
         }
 
         $query->where('prc.`id_reference`="' . (int) $carrierReference . '" OR prc.`all_carriers`="1"');

@@ -21,6 +21,7 @@
 
 namespace Invertus\dpdBaltics\Service;
 
+use Address;
 use Carrier;
 use Cart;
 use Context;
@@ -32,6 +33,7 @@ use Invertus\dpdBaltics\Repository\PaymentRepository;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\ShopRepository;
+use Invertus\dpdBaltics\Repository\ZoneRepository;
 use Language;
 use Module;
 use Shop;
