@@ -22,27 +22,27 @@
 namespace Invertus\dpdBaltics\Factory;
 
 use Configuration;
+use Country;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\ApiConfiguration;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBalticsApi\Api\Configuration\ApiConfigurationInterface;
+use Invertus\dpdBalticsApi\ApiConfig\ApiConfig;
 use Invertus\dpdBalticsApi\Factory\APIParamsFactoryInterface;
 
-class APIParamsFactory implements APIParamsFactoryInterface
+class APIParamsCountryFactory implements APIParamsFactoryInterface
 {
     /**
      * @var DPDBaltics
      */
     private $module;
+    /** @var Country */
+    private $country;
 
-    /**
-     * @var ApiConfiguration
-     */
-    private $apiConfiguration;
-
-    public function __construct(DPDBaltics $module, ApiConfiguration $apiConfiguration)
+    public function __construct(DPDBaltics $module, Country $country)
     {
         $this->module = $module;
-        $this->apiConfiguration = $apiConfiguration;
+        $this->country = $country;
     }
 
     public function getUsername()
@@ -70,6 +70,23 @@ class APIParamsFactory implements APIParamsFactoryInterface
      */
     public function getUrl()
     {
-        return $this->apiConfiguration->getUrl();
+        if (Configuration::get(Config::SHIPMENT_TEST_MODE)) {
+            $apiUrls = ApiConfig::TEST_URLS;
+        } else {
+            $apiUrls = ApiConfig::LIVE_URLS;
+        }
+
+        $wsCountry = $this->country->iso_code;
+
+        if ($wsCountry === Config::POLAND_ISO_CODE) {
+            $wsCountry = Config::LITHUANIA_ISO_CODE;
+        }
+
+        if (!$wsCountry || !isset($apiUrls[$wsCountry])) {
+            $wsCountry = Config::LATVIA_ISO_CODE;
+        }
+
+        return $apiUrls[$wsCountry];
+
     }
 }

@@ -43,6 +43,8 @@ class Config
     const LATVIA_ISO_CODE = 'LV';
     const ESTONIA_ISO_CODE = 'EE';
     const PORTUGAL_ISO_CODE = 'PT';
+    const POLAND_ISO_CODE = 'PL';
+
     const VALID_TRACKING_URL_COUNTRIES = ['LT', 'EE', 'LV'];
 
     const AVAILABLE_PUDO_COD_IDS = [

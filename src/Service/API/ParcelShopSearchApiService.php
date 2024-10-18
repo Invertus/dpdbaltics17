@@ -21,11 +21,13 @@
 
 namespace Invertus\dpdBaltics\Service\API;
 
-use Cache;
-use Configuration;
+use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Factory\APIParamsCountryFactory;
+use Invertus\dpdBaltics\Infrastructure\Adapter\ModuleFactory;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ParcelShopSearchRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ParcelShopSearchFactory;
+use Psr\Log\LoggerInterface;
 
 class ParcelShopSearchApiService
 {
@@ -33,10 +35,16 @@ class ParcelShopSearchApiService
      * @var ParcelShopSearchFactory
      */
     private $parcelShopSearchFactory;
+    /** @var DPDBaltics */
+    private $module;
+    /** @var LoggerInterface */
+    private $logger;
 
-    public function __construct(ParcelShopSearchFactory $parcelShopSearchFactory)
+    public function __construct(ParcelShopSearchFactory $parcelShopSearchFactory, ModuleFactory $moduleFactory, LoggerInterface $logger)
     {
         $this->parcelShopSearchFactory = $parcelShopSearchFactory;
+        $this->module = $moduleFactory->getModule();
+        $this->logger = $logger;
     }
 
     public function getAllCountryParcels(
@@ -52,7 +60,15 @@ class ParcelShopSearchApiService
             null,
             null
         );
-        $parcelShopSearch = $this->parcelShopSearchFactory->makeParcelShopSearch();
+
+        // NOTE: Poland parcel shop search is handled with LT endpoint
+        if ($iso === Config::POLAND_ISO_CODE) {
+            $apiParams = new APIParamsCountryFactory($this->module, new \Country(\Country::getByIso($iso)));
+            $parcelShopSearchFactory = new ParcelShopSearchFactory($this->logger, $apiParams);
+            $parcelShopSearch = $parcelShopSearchFactory->makeParcelShopSearch();
+        } else {
+            $parcelShopSearch = $this->parcelShopSearchFactory->makeParcelShopSearch();
+        }
 
         $response = $parcelShopSearch->parcelShopSearch($requestBody);
 

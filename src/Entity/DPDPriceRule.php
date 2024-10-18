@@ -237,6 +237,14 @@ class DPDPriceRule extends ObjectModel
      */
     public function isApplicableForCart(Cart $cart)
     {
+        // todo if applicable by country
+        if (!$this->isApplicableByCountry($cart)) {
+            return false;
+        }
+
+
+        //todo if applicable by range
+
         if (!$this->isApplicableByPrice($cart->getOrderTotal(true, Cart::BOTH_WITHOUT_SHIPPING), $cart->id_currency)) {
             return false;
         }
@@ -269,6 +277,15 @@ class DPDPriceRule extends ObjectModel
         $toPrice  = Tools::convertPrice($this->order_price_to, $idCurrency);
 
         return $this->isApplicableForRange($price, $priceFrom, $toPrice);
+    }
+
+
+    private function isApplicableByCountry($cart)
+    {
+        $country = new \Country($cart->id_address_delivery);
+        $priceRule = new DPDPriceRule($this->id);
+
+        return true;
     }
 
     public function isApplicableByWeight($weight)

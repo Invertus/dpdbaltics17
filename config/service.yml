@@ -177,6 +177,8 @@ services:
     class: 'Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService'
     arguments:
       - '@invertus.dpdbaltics_api.factory.apirequest.parcel_shop_search_factory'
+      - '@Invertus\dpdBaltics\Infrastructure\Adapter\ModuleFactory'
+      - '@invertus.dpdbaltics.logger.logger'
 
   invertus.dpdbaltics.service.pudo_service:
     class: 'Invertus\dpdBaltics\Service\PudoService'
