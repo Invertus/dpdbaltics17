@@ -342,7 +342,6 @@ class ShipmentService
 
         try {
             $this->shipmentDataValidator->validate($shipmentData);
-
         } catch (InvalidShipmentDataField $e) {
             $response['message'] = $this->exceptionService->getErrorMessageForException(
                 $e,
@@ -351,7 +350,6 @@ class ShipmentService
             $this->logger->error($response['message']);
 
             return $response;
-
         } catch (Exception $e) {
             $response['message'] = $this->module->l(
                 sprintf('Failed to save shipment data. Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
@@ -370,7 +368,9 @@ class ShipmentService
             }
         } catch (Exception $e) {
             $response['message'] = $this->module->l(
-                sprintf('Could not fetch shipment order ID Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart
+                sprintf(
+                    'Could not fetch shipment order ID Error: %s',
+                    $e->getMessage(). 'ID cart: '. $order->id_cart
                 )
             );
             $this->logger->error($response['message']);
@@ -441,7 +441,6 @@ class ShipmentService
 
                 return $response;
             }
-
         }
 
         //Tries to retrieve carrier id by product functionality bugfix for order view shipment change

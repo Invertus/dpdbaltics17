@@ -78,7 +78,6 @@ class ProductService
      */
     public function updateProductName($productId, $name)
     {
-
         try {
             $dpdProduct = new DPDProduct($productId);
             if (!\Validate::isLoadedObject($dpdProduct)) {

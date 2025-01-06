@@ -248,7 +248,6 @@ class ModuleTabs
 
 
         foreach ($tabs as $tab) {
-
             if (!$visible) {
                 $filtered[] = $tab['class_name'];
             }

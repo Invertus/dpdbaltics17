@@ -30,7 +30,7 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
 
         $selectedCountry = Tools::getValue('country');
         switch ($selectedCountry) {
-            case 'latvia' :
+            case 'latvia':
                 $this->ajaxDie(json_encode($importOnLoginService->importLatviaZones()));
                 break;
             case 'lithuania':

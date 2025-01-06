@@ -56,8 +56,7 @@ class LabelPrintingService
         ShipmentApiService $shipmentApiService,
         ExceptionService $exceptionService,
         Logger $logger
-    )
-    {
+    ) {
         $this->module = $module;
         $this->shipmentApiService = $shipmentApiService;
         $this->exceptionService = $exceptionService;
@@ -100,7 +99,6 @@ class LabelPrintingService
                 $shipmentData,
                 $orderId
             );
-
         } catch (DPDBalticsAPIException $e) {
             $response['message'] = $this->exceptionService->getErrorMessageForException(
                 $e,
@@ -109,7 +107,6 @@ class LabelPrintingService
             $this->logger->error($response['message']);
 
             return $response;
-
         } catch (Exception $e) {
             $exception = $e->getMessage(). ' ID order: '. $orderId;
             $response['message'] = $this->module->l("Failed to create DPD shipment: {$exception}");

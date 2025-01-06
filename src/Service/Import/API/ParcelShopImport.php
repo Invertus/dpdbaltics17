@@ -95,5 +95,4 @@ class ParcelShopImport
                 'success_message' => $this->module->l('Successfully updated parcel shops', self::FILE_NAME)
             ];
     }
-
 }

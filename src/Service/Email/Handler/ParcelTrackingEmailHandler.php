@@ -84,10 +84,10 @@ class ParcelTrackingEmailHandler
             'tracking_urls' =>  $this->trackingUrlFactory->createTrackingUrls($cart, $parcelNumbers)
         ]);
 
-       $parcelUrlTemplate = ContextFactory::getSmarty()
+        $parcelUrlTemplate = ContextFactory::getSmarty()
            ->fetch(
-           $this->module->getLocalPath() . 'views/templates/admin/email/parcel-tracking-links.tpl'
-       );
+               $this->module->getLocalPath() . 'views/templates/admin/email/parcel-tracking-links.tpl'
+           );
         $customer = $order->getCustomer();
 
         $template_vars = [

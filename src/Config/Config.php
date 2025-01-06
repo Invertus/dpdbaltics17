@@ -494,6 +494,7 @@ class Config
                     default:
                         return false;
                 }
+                // no break
             case self::LITHUANIA_ISO_CODE:
             case self::LATVIA_ISO_CODE:
                 switch ($productReference) {
@@ -507,6 +508,7 @@ class Config
                     default:
                         return false;
                 }
+                // no break
             case self::PORTUGAL_ISO_CODE:
                 switch ($productReference) {
                     case self::PRODUCT_TYPE_PUDO:
@@ -519,6 +521,7 @@ class Config
                     default:
                         return false;
                 }
+                // no break
             default:
                 switch ($productReference) {
                     case self::PRODUCT_TYPE_PUDO:
@@ -632,7 +635,6 @@ class Config
     public static function isPrestashopVersionAbove177()
     {
         if (_PS_VERSION_ >= self::PS_VERSION_1_7_7) {
-
             return true;
         }
 
