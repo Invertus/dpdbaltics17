@@ -24,6 +24,10 @@ use Invertus\dpdBaltics\Config\Config;
 use DPDOrderPhone;
 use Invertus\dpdBaltics\Validate\Compatibility\OpcModuleCompatibilityValidator;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CarrierPhoneService
 {
     const LITHUANIA_FULL_PHONE_PREFIX = '370';
@@ -106,7 +110,7 @@ class CarrierPhoneService
         );
 
         return $this->context->smarty->fetch(
-            $this->module->getLocalPath().'/views/templates/hook/front/carrier-phone-number.tpl'
+             'module:dpdbaltics/views/templates/hook/front/carrier-phone-number.tpl'
         );
     }
 

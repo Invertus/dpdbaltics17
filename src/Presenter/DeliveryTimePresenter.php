@@ -25,6 +25,10 @@ use Context;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DeliveryTimePresenter
 {
     /**
@@ -57,7 +61,7 @@ class DeliveryTimePresenter
         );
 
         return $this->context->smarty->fetch(
-            $this->module->getLocalPath().'/views/templates/hook/front/carrier-delivery-time.tpl'
+             'module:dpdbaltics/views/templates/hook/front/carrier-delivery-time.tpl'
         );
     }
 }
