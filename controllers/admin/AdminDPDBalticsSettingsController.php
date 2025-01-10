@@ -33,6 +33,7 @@ use Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService;
 use Invertus\dpdBaltics\Service\LogsService;
 use Invertus\dpdBaltics\Service\Product\ProductService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
+use Invertus\dpdBaltics\Validate\Version\ModuleVersionValidator;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
@@ -212,6 +213,10 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
     public function postProcess()
     {
+        /** @var ModuleVersionValidator $moduleVersionValidator */
+        $moduleVersionValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.module_version_validator');
+
+        $moduleVersionValidator->validate();
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
