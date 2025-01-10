@@ -73,17 +73,10 @@
                                     data-address="{$service->getStreet()}"
                                     data-city="{$service->getCity()}"
                                     data-countryId="{$service->getCountry()}"
-                                    {if $service->getParcelShopId() === $saved_pudo_id}
-                                        disabled
-                                    {/if}
                             >
 
                                 <span>
-                                    {if $service->getParcelShopId() === $saved_pudo_id}
-                                        {l s='Selected' mod='dpdbaltics'}
-                                    {else}
-                                        {l s='Select' mod='dpdbaltics'}
-                                    {/if}
+                                    {l s='Select' mod='dpdbaltics'}
                                 </span>
                             </button>
                         </div>
@@ -105,7 +98,6 @@
                             &nbsp;
                         </div>
                     </div>
-                    <input name="saved_pudo_id" class="dpd-hidden hidden" hidden value="{$saved_pudo_id}">
                     <input name="pudo-type" class="dpd-hidden hidden" hidden value="{$service->type}">
                     <input name="pudo-lat" class="dpd-hidden hidden" hidden value="{$service->getLatitude()}">
                     <input name="pudo-lng" class="dpd-hidden hidden" hidden value="{$service->getLongitude()}">

@@ -222,8 +222,6 @@ class PudoService
                 'dpd_pickup_logo' => $this->module->getPathUri() . 'views/img/pickup.png',
                 'dpd_locker_logo' => $this->module->getPathUri() . 'views/img/locker.png',
                 'countryList' => Country::getCountries($this->language->id, true),
-                'selectedPudo' => $selectedPudo,
-                'saved_pudo_id' => $selectedPudo->pudo_id
             ]
         );
 

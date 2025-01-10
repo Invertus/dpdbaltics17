@@ -233,7 +233,6 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                 'dpd_pickup_logo' => $this->module->getPathUri() . 'views/img/pickup.png',
                 'dpd_locker_logo' => $this->module->getPathUri() . 'views/img/locker.png',
                 'countryList' => Country::getCountries($this->context->language->id, true),
-                'saved_pudo_id' => $selectedPudo->pudo_id
             ]
         );
 
@@ -364,8 +363,6 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                 'dpd_pickup_logo' => $this->module->getPathUri() . 'views/img/pickup.png',
                 'dpd_locker_logo' => $this->module->getPathUri() . 'views/img/locker.png',
                 'countryList' => Country::getCountries($this->context->language->id, true),
-                'selectedPudo' => $selectedPudo,
-                'saved_pudo_id' => $selectedPudo->getParcelShopId()
             ]
         );
 
