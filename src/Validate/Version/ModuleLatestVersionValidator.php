@@ -52,6 +52,6 @@ class ModuleLatestVersionValidator implements ValidatorInterface
         $version = json_decode($response)->tag_name;
         $version = preg_replace('/^v/', '', $version);
 
-        return $this->moduleVersionUtility->isVersionGreaterOrEqualTo($version);
+        return $this->moduleVersionUtility->isVersionLessThan($version);
     }
 }
