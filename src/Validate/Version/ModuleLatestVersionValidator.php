@@ -42,17 +42,26 @@ class ModuleLatestVersionValidator implements ValidatorInterface
 
     public function validate(): bool
     {
-        return $this->moduleVersionUtility->isVersionLessThan($this->getLatestModuleVersion());
+        try {
+            return $this->moduleVersionUtility->isVersionLessThan($this->getLatestModuleVersion());
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     private function getLatestModuleVersion(): string
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop');
-        $response = curl_exec($ch);
-        curl_close($ch);
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop');
+            $response = curl_exec($ch);
+            curl_close($ch);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
         unset($ch);
 
         $version = json_decode($response)->tag_name;

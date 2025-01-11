@@ -216,7 +216,12 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         /** @var ModuleLatestVersionValidator $moduleVersionValidator */
         $moduleVersionValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.module_latest_version_validator');
 
-        $isModuleVersionLatest = $moduleVersionValidator->validate();
+        try {
+            $isModuleVersionLatest = $moduleVersionValidator->validate();
+        } catch (Exception $e) {
+            $this->errors[] = $e->getMessage();
+        }
+
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
