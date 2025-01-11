@@ -42,16 +42,21 @@ class ModuleLatestVersionValidator implements ValidatorInterface
 
     public function validate(): bool
     {
+        return $this->moduleVersionUtility->isVersionLessThan($this->getLatestModuleVersion());
+    }
+
+    private function getLatestModuleVersion(): string
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop'); // GitHub requires a User-Agent header
         $response = curl_exec($ch);
         curl_close($ch);
+        unset($ch);
 
         $version = json_decode($response)->tag_name;
-        $version = preg_replace('/^v/', '', $version);
 
-        return $this->moduleVersionUtility->isVersionLessThan($version);
+        return preg_replace('/^v/', '', $version);
     }
 }
