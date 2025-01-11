@@ -20,27 +20,38 @@
 
 namespace Invertus\dpdBaltics\Validate\Version;
 
+use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Infrastructure\Utility\ModuleVersionUtility;
 use Invertus\dpdBaltics\Validate\ValidatorInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class ModuleVersionValidator implements ValidatorInterface
+class ModuleLatestVersionValidator implements ValidatorInterface
 {
+    /**
+     * @var ModuleVersionUtility
+     */
+    private $moduleVersionUtility;
+
+    public function __construct(ModuleVersionUtility $moduleVersionUtility)
+    {
+        $this->moduleVersionUtility = $moduleVersionUtility;
+    }
+
     public function validate(): bool
     {
-        $repository = 'DPDBaltics/PrestaShop-1.7'; // Replace with actual repository
-        $url = "https://api.github.com/repos/$repository/releases/latest";
-
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'PHP Version Checker'); // GitHub requires a User-Agent header
+        curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop'); // GitHub requires a User-Agent header
         $response = curl_exec($ch);
         curl_close($ch);
 
         $version = json_decode($response)->tag_name;
         $version = preg_replace('/^v/', '', $version);
+
+        return $this->moduleVersionUtility->isVersionGreaterOrEqualTo($version);
     }
 }

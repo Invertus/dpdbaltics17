@@ -262,6 +262,8 @@ class Config
 
     const COUNTRY_ISO_CODES_WITH_MIXED_CHARACTERS = ['IE', 'GB', 'NL'];
 
+    public const DPD_GITHUB_REPO_RELEASE_LATEST_URL = 'https://api.github.com/repos/DPDBaltics/PrestaShop-1.7/releases/latest';
+
     // NOTE: Add OPC module tech name if payment option is compatible
     public const DPD_OPC_MODULE_LIST = ['onepagecheckoutps', 'supercheckout', 'thecheckout'];
 
