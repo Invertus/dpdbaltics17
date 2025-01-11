@@ -50,7 +50,7 @@ class ModuleLatestVersionValidator implements ValidatorInterface
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop'); // GitHub requires a User-Agent header
+        curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop');
         $response = curl_exec($ch);
         curl_close($ch);
         unset($ch);
