@@ -43,13 +43,13 @@ class ModuleLatestVersionValidator implements ValidatorInterface
     public function validate(): bool
     {
         try {
-            return $this->moduleVersionUtility->isVersionLessThan($this->getLatestModuleVersion());
+            return $this->moduleVersionUtility->isVersionLatest($this->getLatestModuleVersionGithub());
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
     }
 
-    private function getLatestModuleVersion(): string
+    private function getLatestModuleVersionGithub(): string
     {
         try {
             $ch = curl_init();

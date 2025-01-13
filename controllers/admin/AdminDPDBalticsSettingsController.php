@@ -222,6 +222,10 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
             $this->errors[] = $e->getMessage();
         }
 
+        if (!$isModuleVersionLatest) {
+            $this->errors[] = $this->l('Please upgrade DPD Baltics module');
+        }
+
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');

@@ -25,7 +25,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class AdminDPDBalticsAjaxController extends AbstractAdminController
+class
+AdminDPDBalticsAjaxController extends AbstractAdminController
 {
     public function ajaxProcessImportZones()
     {

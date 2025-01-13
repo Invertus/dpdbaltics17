@@ -38,8 +38,8 @@ class ModuleVersionUtility
         $this->moduleVersion = $module->version;
     }
 
-    public function isVersionLessThan(string $version): bool
+    public function isVersionLatest(string $version): bool
     {
-        return version_compare($this->moduleVersion, $version, '<');
+        return version_compare($this->moduleVersion, $version, '>=');
     }
 }
