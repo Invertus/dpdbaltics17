@@ -23,8 +23,8 @@ namespace Invertus\dpdBaltics\Service\API;
 
 use Country;
 use DPDBaltics;
-use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\courierRequestData;
+use Invertus\dpdBaltics\Service\API\Parser\CourierRequestResponseParser;
 use Invertus\dpdBalticsApi\Api\DTO\Request\CourierRequestRequest;
 use Invertus\dpdBalticsApi\Api\DTO\Response\courierRequestResponse;
 use Invertus\dpdBalticsApi\Factory\APIRequest\courierRequestFactory;
@@ -40,11 +40,19 @@ class CourierRequestService
      * @var DPDBaltics
      */
     private $module;
+    /**
+     * @var CourierRequestResponseParser
+     */
+    private $responseParser;
 
-    public function __construct(CourierRequestFactory $courierRequestFactory, DPDBaltics $module)
-    {
+    public function __construct(
+        CourierRequestFactory $courierRequestFactory,
+        DPDBaltics $module,
+        CourierRequestResponseParser $responseParser
+    ) {
         $this->courierRequestFactory = $courierRequestFactory;
         $this->module = $module;
+        $this->responseParser = $responseParser;
     }
 
     public function createCourierRequest(CourierRequestData $courierRequestData)
@@ -70,16 +78,22 @@ class CourierRequestService
             $courierRequestData->getWeight(),
             $courierRequestData->getParcelsCount()
         );
-        
+
+        if ($courierRequestData->getPickupTimeFrom() && $courierRequestData->getPickupTimeTo()) {
+            $request->setPickupDate($courierRequestData->getPickupDate());
+            $request->setPickupTimeFrom($courierRequestData->getPickupTimeFrom());
+            $request->setPickupTimeTo($courierRequestData->getPickupTimeTo());
+        }
+
         $courierRequest = $this->courierRequestFactory->makecourierRequest();
 
         /** @var courierRequestResponse $response */
         $response = $courierRequest->courierRequest($request);
 
-        if (!$this->checkIfCourierRequestIsSuccess($response)) {
+        if (!$this->responseParser->isSuccess($response)) {
             return [
                 'status' => false,
-                'message' => $this->getCourierRequestError($response)
+                'message' => $this->responseParser->getError($response)
             ];
         }
 
@@ -87,24 +101,5 @@ class CourierRequestService
             'status' => true,
             'message' => $this->module->l('courier request was successfully created!')
         ];
-    }
-
-    private function checkIfCourierRequestIsSuccess($courierRequestResponse)
-    {
-        if ($courierRequestResponse === Config::API_COURIER_REQUEST_SUCCESS_STATUS) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function getCourierRequestError($courierRequestResponse)
-    {
-        $errorPosition = strpos(
-            $courierRequestResponse,
-            Config::API_COURIER_REQUEST_ERROR_STATUS
-        );
-
-        return substr($courierRequestResponse, $errorPosition);
     }
 }

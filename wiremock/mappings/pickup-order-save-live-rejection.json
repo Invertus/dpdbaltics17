@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/ws-mapper-rest/pickupOrderSave_"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "level": "error",
+      "body": {
+        "message": "Available \"pickupTimeFrom\" values: [08:00, 09:00, 10:00, 11:00, 12:00, 12:30, 13:00, 13:30, 14:00, 14:30, 15:00]. Available \"pickupTimeTo\" values: [15:00, 16:00, 17:00, 18:00]."
+      }
+    }
+  }
+}

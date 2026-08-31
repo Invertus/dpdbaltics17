@@ -24,9 +24,29 @@ namespace Invertus\dpdBaltics\Validate\CourierRequest;
 use DateTime;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\CourierRequestData;
+use Invertus\dpdBaltics\Util\PickupTimeSlotUtility;
 
 class CourierRequestValidator
 {
+    /**
+     * @return bool
+     */
+    public function validatePickupTimeSlots(CourierRequestData $courierRequestData)
+    {
+        $from = $courierRequestData->getPickupTimeFrom();
+        $to = $courierRequestData->getPickupTimeTo();
+
+        if (!PickupTimeSlotUtility::isValidPickupTimeFromSlot($from)) {
+            return false;
+        }
+
+        if (!PickupTimeSlotUtility::isValidPickupTimeToSlot($to)) {
+            return false;
+        }
+
+        return $from < $to;
+    }
+
     public function validate(CourierRequestData $courierRequestData, $countryIso)
     {
         $dateFrom = new DateTime($courierRequestData->getPickupTime());
